@@ -244,9 +244,11 @@ def game_page(game_id):
         'game': current_game,
         'other_games': other_games,
         'active_page': current_game.get('category', [None])[0],
-        'title': f"{current_game['name']} - CraveGames"
+        'title': f"{current_game['name']} - CraveGames",
+        'meta_description': f"Jump into {current_game['name']}—free to play anytime on CraveGames.me. Start craving games today!"
     }
     return render_or_jsonify('game_content.html', **context)
+
 
 @app.route('/category/<category_name>')
 def category_page(category_name):
