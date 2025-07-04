@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing {{ game_id }}</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; display: flex; justify-content: center; align-items: center; }
+        #player { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        ruffle-player { width: 100% !important; height: 100% !important; display: block; }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script>
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.addEventListener("load", (event) => {
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("player");
+            container.appendChild(player);
+            player.load({
+                url: "/games/{{ game_id }}/{{ swf_file }}",
+                "autoplay": "on",
+                "unmuteOverlay": "visible",
+                "scale": "exactfit",
+                "wmode": "direct"
+            });
+            player.addEventListener('loadeddata', () => {
+                player.style.width = '100%';
+                player.style.height = '100%';
+            });
+        });
+    </script>
+</body>
+</html>

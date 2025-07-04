@@ -1,0 +1,232 @@
+{
+  "duck-life": {
+    "name": "Duck life",
+    "section": "New & featured games",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 9.3,
+    "featured": true,
+    "description": "In Duck Life, your role is to train a duck for racing in three key disciplines: running, flying, and swimming. You'll find yourself engaged in various training exercises to level up your duck's abilities, earning coins through training and competing against other ducks. The game also includes a feature for buying and feeding seeds to your duck to ensure it has enough energy for the races, buying cool hats and paint to customize your ducks look, and seeds for skill.",
+    "instructions": "Your primary goal is to develop your duck's skills in running, swimming, and flying. You'll do this through different training courses designed to enhance these abilities. Once your duck's skills are adequately honed, you can enter it into races. Careful management of your duck's energy is crucial. You'll need to feed it with seeds, available for purchase, to boost its energy levels."
+  },
+  "duck-life-2": {
+    "name": "Duck Life 2",
+    "section": "New & featured games",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "In Duck Life 2, you train a duck in various disciplines such as running, flying, swimming, and climbing, aiming to become the best duck adventurer in the world. The game takes you on a global journey, with races set in diverse locations like Scotland, England, Egypt, Hawaii, and Japan. The game introduces a more complex training and racing dynamic, testing your duck's abilities in a 'quadrathlon'.",
+    "instructions": "You start by training your duck's core skills; running, flying, climbing, and swimming. Entering a race prematurely will likely lead to defeat, so proper training is key. The races are staged in a sequence of countries, each presenting unique challenges."
+  },
+  "duck-life-3": {
+    "name": "Duck Life 3",
+    "section": "New & featured games",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "Duck Life 3 is a duck racing game featuring genetically modified ducks that evolve as you progress. Choose from one of four duck breeds and evolve as you complete each league. Like the previous game, training is essential to level up and improve your abilities. "
+  },
+  "duck-life-4": {
+    "name": "Duck Life 4",
+    "section": "New & featured games",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "Duck Life 4 is a whimsical, training-based racing game where you nurture a duck into a champion racer. Train your duck in various skills to help it win races and tournaments, earn coins, and unlock new areas and items."
+  },
+  "geometry-dash": {
+    "name": "Geometry Dash",
+    "section": "Trending now",
+    "category": [
+      "Platformer"
+    ],
+    "iframe_url": "https://1games.io/embed/geometry-lite",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Geometry Dash is a crazy mobile and computer game that features fast-paced platforming gameplay set to an electronic music soundtrack. The game is known for its challenging levels, colorful graphics, and addictive gameplay.",
+    "instructions": "Geometry Dash is about surviving and completing levels. Jump, spin, and fly through a gorgeous, rhythmic environment. Geometry Dash has very easy rules, but the challenges are very hard and can stop your heart. You have to get past obstacles to reach the finish line. To get to the end, all you have to do is guide the cube through many dangerous areas on the map. But this is not an easy job. To get good control choices, you need to understand the lively beats at each level. It's okay if you don't want to use background music. Just practice a lot and try again and again until you win! You should also pay attention to the bright rings and pads. These things can help the figure jump very high. One more thing is that the main figure can change during certain parts. Additionally, it is very important to understand how each one moves to get good results."
+  },
+  "minecraft": {
+    "name": "Minecraft",
+    "section": "Trending now",
+    "category": [
+      "Sandbox",
+      "Adventure"
+    ],
+    "iframe_url": "https://eaglercraft.com/mc/1.8.8/",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Minecraft is a game about breaking and placing blocks. At first, people built structures to protect against nocturnal monsters, but as the game grew players worked together to create wonderful, imaginative things."
+  },
+  "ragdoll-playground": {
+    "name": "Ragdoll Playground",
+    "section": "Trending now",
+    "category": [
+      "Sandbox",
+      "Action"
+    ],
+    "iframe_url": "https://1games.io/embed/ragdoll-playground",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Ragdoll Playground is your personal playground of absolute madness with simulation gameplay. Experience explosive combos, flying ragdolls, and endless wild experiments where you have complete control. Wanna catapult a melon into orbit? Do it. Chain together a ridiculous mess of explosives, and watch it all blow sky-high. Whether you\u00e2\u20ac\u2122re crafting epic setups or just smashing things for the fun of it, this sandbox guarantees endless laughs. Get in, get wild, and let the chaos explode!"
+  },
+  "italian-brainrot-clicker": {
+    "name": "Italian Brainrot Clicker",
+    "section": "Clicker",
+    "category": [
+      "Clicker"
+    ],
+    "iframe_url": "https://1games.io/embed/italian-brainrot-clicker",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Italian Brainrot Clicker is a hilarious one-button idle clicker that throws you into the chaotic charm of the Italian Brainrot universe. Fueled by Gen-Z meme culture and AI-generated madness, this game unleashes a world of mutant creatures and meme-fueled mayhem. From dancing cappuccinos to cactus-bodied elephants, every tap pulls you deeper into a spiral of satire and brainrot. It is weird, it is wild, and it is wonderfully addictive. You will not believe what you are unlocking next!"
+  },
+  "short-life": {
+    "name": "Short Life",
+    "section": "Adventure",
+    "category": [
+      "Adventure",
+      "Platformer"
+    ],
+    "iframe_url": "https://classroom8.github.io/short-life/",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Short Life is an exciting physics platform game with a twist. You control a ragdoll character, and your goal is to guide them safely through 16 challenging levels. However, be careful because the levels are filled with bloody and deadly traps. Every move you make could be the difference between survival and a hilarious ragdoll disaster. The game brings dark humor to life with its over-the-top damage system, making even the smallest mistake an unforgettable moment."
+  },
+  "short-life-2": {
+    "name": "Short Life 2",
+    "section": "Adventure",
+    "category": [
+      "Adventure",
+      "Platformer"
+    ],
+    "iframe_url": "https://085dacac-91e0-4d5a-869c-c5654e446028.poki-gdn.com/f4a39ac8-4983-42f6-9b80-bb006843fecd/index.html?country=US&ccpaApplies=0&url_referrer=https%3A%2F%2Fpoki.com%2F&tag=pg-4d237d69c9232ba1c9350531a50e6b71e85e3547&site_id=3&iso_lang=en&poki_url=https%3A%2F%2Fpoki.com%2Fen%2Fg%2Fshort-life-2&hoist=yes&nonPersonalized=n&cloudsavegames=n&familyFriendly=n&categories=3%2C9%2C48%2C49%2C96%2C929%2C1013%2C1018%2C1126%2C1185%2C1193&ab=24d8666f3b29486be8332664c5b70c486da11bc0&experiment=a-3f3cb9a7&special_condition=landing&game_id=085dacac-91e0-4d5a-869c-c5654e446028&game_version_id=f4a39ac8-4983-42f6-9b80-bb006843fecd&inspector=0&csp=1",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Short Life 2 is an exciting physics platform game with a twist. You control a ragdoll character, and your goal is to guide them safely through 16 challenging levels. However, be careful because the levels are filled with bloody and deadly traps. Every move you make could be the difference between survival and a hilarious ragdoll disaster. The game brings dark humor to life with its over-the-top damage system, making even the smallest mistake an unforgettable moment."
+  },
+  "friday-night-funkin": {
+    "name": "Friday Night Funkin",
+    "section": "Trending now",
+    "category": [
+      "Rhythm"
+    ],
+    "iframe_url": "https://fnf.kdata1.com/2024/fnf/5201/",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Friday Night Funkin\u00e2\u20ac\u2122 (fnf) is a musical rhythm game created by ninjamuffin99. In this game, you need to impress your lover's ex-rockstar father with the power of music! You must survive multiple weeks of freestyle music battles to win him over. Press the arrow keys in time with the music to outdo your opponents. In the story mode, you need to mirror your opponent's singing by using the WASD and Arrow keys. The first songs start simple, but the beats get much more complicated later on with the introduction of duets. You can also enjoy the free play mode and enjoy all the cool beats and characters this game has to offer. Feel free to adjust the difficulty to your liking and start vibing!"
+  },
+  "happy-wheels": {
+    "name": "Happy Wheels",
+    "section": "New & featured games",
+    "category": [
+      "Platformer"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "The Flash classic Happy Wheels is back! In this crazy platform racing game, it's up to you to get to the end of the level in one piece. But that's easier said than done. Crashing, falling or getting stuck can result in your character losing an arm, a leg or worse... Play as Effective Shopper, Wheelchair Guy, Irresponsible Dad or Business Guy and try to make it through the original 10 classic levels. Will you make it? Or will you go splat? "
+  },
+  "run3": {
+    "name": "Run 3",
+    "section": "New & featured games",
+    "category": [
+      "Platformer"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "There\u00e2\u20ac\u2122s a whole new galaxy waiting to be explored! Use the arrow keys to run and jump through the space tunnels. Use the left and right arrow keys to move left and right, and press Spacebar to jump over gaps in the floor. If you move far enough to the left or right, you can even land on the walls."
+  },
+  "subway-surfers": {
+    "name": "Subway Surfers",
+    "section": "Trending now",
+    "category": [
+      "Platformer"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "Subway Surfers is a classic endless runner game. You play as Jake, who surfs the subways and tries to escape from the grumpy Inspector and his dog. You'll need to dodge trains, trams, obstacles, and more to go as far as you can in this endless running game. Collect coins to unlock power-ups and special gear to help you go further every time in Subway Surfers. Furthermore, coins can be used to unlock different characters and boards. With your keys you can customize the characters and upgrade your hoverboards with special powers. Don't forget to complete the awards, since they give you keys. In 'MyTour' you can collect rewards from completing daily Word Hunts. You can also find missions there. Subway Surfers was created by Sybo in 2012. And till this day it is one of the most popular games online!"
+  },
+  "infinite-craft": {
+    "name": "Infinite Craft",
+    "section": "Trending now",
+    "category": [
+      "Action"
+    ],
+    "iframe_url": "https://infinitecraft.gg/infinite-craft/",
+    "rating": 8.7,
+    "featured": true,
+    "description": "Infinite Craft is a free, browser-based sandbox game where players combine elements to discover new items and creatures."
+  },
+  "learn-to-fly-3": {
+    "name": "Learn To Fly 3",
+    "section": "New & featured games",
+    "category": [
+      "Action"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "Build your spaceship from scratch, earn funds and invest them into building a bigger, better spaceship as you try and fly your way up to space! "
+  },
+  "sm64": {
+    "name": "Super Mario 64",
+    "section": "Trending now",
+    "category": [
+      "Adventure",
+      "Platformer"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "description": "Infinite Craft is a free, browser-based sandbox game where players combine elements to discover new items and creatures."
+  },
+  "cubes-2048-io": {
+    "name": "Cubes 2048.io",
+    "section": "Adventure",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/5b5b258f7ed64796afd5f7e3653f18e1/?gd_sdk_referrer_url=https://gamedistribution.com/games/cubes-2048.io",
+    "description": "Infinite Craft is a free, browser-based sandbox game where players combine elements to discover new items and creatures."
+  },
+  "mr-drifter": {
+    "name": "Mr. Drifter: Car Chase Simulator",
+    "section": "Adventure",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/fce750f12dda4320ab5e5b638995459f/?gd_sdk_referrer_url=https://gamedistribution.com/games/mr.-drifter:-car-chase-simulator#iss=https%3A%2F%2Fidp.azerionconnect.com%2Fauth%2Frealms%2Fazerion",
+    "description": "Run fast, crash hard, and cheat death \u00e2\u20ac\u201d in style. Race through a chaotic low-poly city as you dodge police, traffic, and total destruction. Use game-changing power-ups like Slow-Mo, Freeze, and EMP Blasts to escape the impossible. Unlock wild getaway cars \u00e2\u0161\u00a1 Grab power-ups mid-chase Smash through obstacles & roadblocks Stylized low-poly world with top-down tilt Endless cops. Infinite chaos. One rule: don\u00e2\u20ac\u2122t stop. How long can you stay free?"
+  },
+  "crazy-motorcycle": {
+    "name": "Crazy Motorcycle",
+    "section": "Adventure",
+    "category": [
+      "Adventure"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/fce750f12dda4320ab5e5b638995459f/?gd_sdk_referrer_url=https://gamedistribution.com/games/mr.-drifter:-car-chase-simulator#iss=https%3A%2F%2Fidp.azerionconnect.com%2Fauth%2Frealms%2Fazerion",
+    "description": "Run fast, crash hard, and cheat death \u00e2\u20ac\u201d in style. Race through a chaotic low-poly city as you dodge police, traffic, and total destruction. Use game-changing power-ups like Slow-Mo, Freeze, and EMP Blasts to escape the impossible. Unlock wild getaway cars \u00e2\u0161\u00a1 Grab power-ups mid-chase Smash through obstacles & roadblocks Stylized low-poly world with top-down tilt Endless cops. Infinite chaos. One rule: don\u00e2\u20ac\u2122t stop. How long can you stay free?"
+  },
+  "brainrot-clicker": {
+    "name": "Brainrot Clicker",
+    "section": "Clicker",
+    "category": [
+      "Clicker"
+    ],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/eb45cb884a3140bea17b3070ff6b4d70/?gd_sdk_referrer_url=https://gamedistribution.com/games/brainrot-clicker/",
+    "description": "Brainrot Clicker is a hilarious and chaotic idle clicker game that plunges you into a bizarre world of meme-fueled madness. Your mission is simple: tap the screen to earn 'Italian Brainrot Points' and unlock increasingly ridiculous AI-generated characters from the internet\u00e2\u20ac\u2122s wildest corners. With eye-catching visuals, meme-inspired humor, and endless upgrades, Brainrot Clicker offers a weirdly satisfying experience you won\u00e2\u20ac\u2122t want to stop!"
+  }
+}

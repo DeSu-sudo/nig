@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.png" id="favicon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
+         crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="logo">CraveGames</div>
+            <a href="/" class="sidebar-item {{ 'active' if active_page == 'Home' }}">
+                <span class="sidebar-icon"><i data-lucide="home"></i></span>
+                <span class="sidebar-text">Home</span>
+            </a>
+            <hr class="sidebar-divider">
+            <a href="/category/Platformer" class="sidebar-item {{ 'active' if active_page == 'Platformer' }}">
+                <span class="sidebar-icon"><i data-lucide="gamepad-2"></i></span>
+                <span class="sidebar-text">Platformer</span>
+            </a>
+            <a href="/category/Action" class="sidebar-item {{ 'active' if active_page == 'Action' }}">
+                <span class="sidebar-icon"><i data-lucide="zap"></i></span>
+                <span class="sidebar-text">Action</span>
+            </a>
+            <a href="/category/Adventure" class="sidebar-item {{ 'active' if active_page == 'Adventure' }}">
+                <span class="sidebar-icon"><i data-lucide="compass"></i></span>
+                <span class="sidebar-text">Adventure</span>
+            </a>
+            <a href="/category/Clicker" class="sidebar-item {{ 'active' if active_page == 'Clicker' }}">
+                <span class="sidebar-icon"><i data-lucide="mouse-pointer-click"></i></span>
+                <span class="sidebar-text">Clicker</span>
+            </a>
+            <a href="/category/Beauty" class="sidebar-item {{ 'active' if active_page == 'Beauty' }}">
+                <span class="sidebar-icon"><i data-lucide="star"></i></span>
+                <span class="sidebar-text">Beauty</span>
+            </a>
+            <hr class="sidebar-divider">
+        </nav>
+
+        <div class="main-content">
+            <div class="header">
+                 <div class="search-container">
+                    <div class="search-icon"><i data-lucide="search"></i></div>
+                    <input type="text" class="search-input" placeholder="Search">
+                    <div class="search-results" id="search-results-dropdown"></div>
+                </div>
+                <div class="theme-toggle">
+                    <button class="theme-btn active"><i data-lucide="moon"></i></button>
+                    <button class="theme-btn"><i data-lucide="sun"></i></button>
+                    <button class="theme-btn" id="disguise-btn" title="Disguise Page"><i data-lucide="shield-half"></i></button>
+                </div>
+            </div>
+            
+            <div id="content-container">
+                {% include content_template %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // This function needs to be called on initial load and after new content is fetched.
+        function initializePageScripts() {
+            // Re-initialize Lucide icons for any new content.
+            lucide.createIcons();
+
+            // All scripts that act on page content go here.
+            // For example, the carousel functionality from your original file.
+            document.querySelectorAll('.carousel-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const section = button.dataset.section;
+                    const carousel = document.querySelector(`[data-section="${section}"].games-carousel`);
+                    const cardWidth = 240; // Card width + gap
+                    const isNext = button.classList.contains('carousel-btn-next');
+                    const targetScroll = isNext ? carousel.scrollLeft + cardWidth * 3 : carousel.scrollLeft - cardWidth * 3;
+                    carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+                });
+            });
+
+            // Re-attach fullscreen button listener if it exists on the page
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const gameFrame = document.getElementById('gameFrame');
+            if (fullscreenBtn && gameFrame) {
+                fullscreenBtn.addEventListener('click', () => {
+                    if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+                    else if (gameFrame.mozRequestFullScreen) gameFrame.mozRequestFullScreen();
+                    else if (gameFrame.webkitRequestFullscreen) gameFrame.webkitRequestFullscreen();
+                    else if (gameFrame.msRequestFullscreen) gameFrame.msRequestFullscreen();
+                });
+            }
+
+            // Push ads to any new ad slots
+            document.querySelectorAll('.adsbygoogle').forEach(ad => {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentContainer = document.getElementById('content-container');
+
+            // Initial setup for scripts on first page load
+            initializePageScripts();
+
+            // --- Core Navigation Logic ---
+            async function loadContent(url, pushState = true) {
+                // Add a loading indicator if desired
+                contentContainer.style.opacity = '0.5';
+
+                try {
+                    // Fetch the content partial and page title
+                    const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}partial=true`);
+                    if (!response.ok) throw new Error(`Failed to load: ${response.statusText}`);
+                    const data = await response.json();
+                    
+                    if (pushState) {
+                        history.pushState({ path: url }, '', url);
+                    }
+                    
+                    // Update content, title, and active sidebar link
+                    document.title = data.title;
+                    contentContainer.innerHTML = data.html;
+                    updateActiveSidebar(url);
+                    
+                    // Re-initialize scripts for the new content
+                    initializePageScripts();
+
+                } catch (error) {
+                    console.error('Failed to load page content:', error);
+                    // On failure, perform a traditional navigation to the page
+                    window.location.href = url;
+                } finally {
+                    contentContainer.style.opacity = '1';
+                }
+            }
+            
+            function updateActiveSidebar(path) {
+                document.querySelectorAll('.sidebar-item').forEach(link => {
+                    // Check if the link's href is a prefix of the current path
+                    if (link.getAttribute('href') === path) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Intercept clicks on internal links
+            document.body.addEventListener('click', (e) => {
+                // Find the closest ancestor `<a>` tag
+                const link = e.target.closest('a');
+
+                // Check if it's an internal link (same domain) and not a link to an asset
+                if (link && link.hostname === window.location.hostname && !link.getAttribute('href').startsWith('/play/')) {
+                    e.preventDefault();
+                    const href = link.getAttribute('href');
+                    loadContent(href);
+                }
+            });
+
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', (e) => {
+                if (e.state && e.state.path) {
+                    loadContent(e.state.path, false);
+                } else {
+                    // Fallback for initial state
+                    loadContent(location.pathname + location.search, false);
+                }
+            });
+            
+            // --- Global Scripts (like search, theme, disguise) ---
+            // These don't need to be re-initialized as they are part of the permanent DOM
+            // --- Global Scripts (like search, theme, disguise) ---
+            const searchInput = document.querySelector('.search-input');
+            const searchResultsContainer = document.getElementById('search-results-dropdown');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim();
+                clearTimeout(searchTimeout); // Reset the timer on each keystroke
+
+                if (query.length < 2) {
+                    searchResultsContainer.innerHTML = '';
+                    searchResultsContainer.style.display = 'none';
+                    return;
+                }
+
+                // Debounce the search to avoid sending a request on every single key press
+                searchTimeout = setTimeout(async () => {
+                    try {
+                        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                        if (!response.ok) throw new Error('Search request failed');
+                        
+                        const results = await response.json();
+
+                        searchResultsContainer.innerHTML = ''; // Clear old results
+
+                        if (results.length > 0) {
+                            results.forEach(game => {
+                                // Create a link for each game found
+                                const gameLink = document.createElement('a');
+                                gameLink.href = `/game/${game.id}`;
+                                gameLink.classList.add('search-result-item');
+                                gameLink.innerHTML = `
+                                    <img src="/thumbnail/${game.id}" class="search-result-img" alt="">
+                                    <span class="search-result-name">${game.name}</span>
+                                `;
+                                searchResultsContainer.appendChild(gameLink);
+                            });
+                        } else {
+                            // Show a "no results" message
+                            const noResults = document.createElement('div');
+                            noResults.classList.add('search-no-results');
+                            noResults.textContent = 'No games found.';
+                            searchResultsContainer.appendChild(noResults);
+                        }
+                        searchResultsContainer.style.display = 'block';
+                    } catch (error) {
+                        console.error('Search failed:', error);
+                        searchResultsContainer.style.display = 'none';
+                    }
+                }, 300); // Wait 300ms after user stops typing
+            });
+
+            // Hide the search results when clicking anywhere else on the page
+            document.addEventListener('click', (e) => {
+                if (!searchResultsContainer.contains(e.target) && e.target !== searchInput) {
+                    searchResultsContainer.style.display = 'none';
+                }
+            });
+            // ... (Your full search JavaScript logic here) ...
+            
+            const disguiseBtn = document.getElementById('disguise-btn');
+            // ... (Your full disguise feature logic here) ...
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% set half = (other_games|length / 2)|round(0, 'floor')|int %}
+<div class="game-page-wrapper">
+    <div class="recs-column-flanking">
+        {% for other_game in other_games[:half] %}
+            <a href="/game/{{ other_game.id }}" class="rec-thumbnail-link">
+                <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">
+            </a>
+        {% endfor %}
+        <div class="ad-container" style="margin-top: 15px;">
+            <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="8375076168"></ins>
+        </div>
+    </div>
+
+    <div class="game-content-column">
+        <div class="game-container">
+            {% set ns = namespace(game_url='') %}
+            {% if game.type == 'iframe' %}
+                {% set ns.game_url = game.iframe_url %}
+            {% elif game.type == 'flash' %}
+                {% set ns.game_url = url_for('play_game', game_id=game.id) %}
+            {% elif game.type == 'html' and game.entry_point %}
+                {% set ns.game_url = url_for('game_assets', game_id=game.id, filename=game.entry_point) %}
+            {% endif %}
+            <iframe src="{{ ns.game_url }}" class="game-frame" id="gameFrame" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+
+        <div class="game-player-bar">
+            <div class="player-bar-info">
+                <span class="player-bar-title">{{ game.name }}</span>
+                <span class="player-bar-branding">On cravegames.me</span>
+            </div>
+            <button class="fullscreen-btn" id="fullscreenBtn" title="Fullscreen">
+                <i data-lucide="maximize" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5485599177157755" data-ad-slot="4818140388" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+        <div class="game-header">
+            <img src="/thumbnail/{{ game.id }}" alt="{{ game.name }}" class="game-thumbnail">
+            <div class="game-info">
+                <h1>{{ game.name }}</h1>
+                <div class="game-meta">
+                    <span>{{ game.category }}</span>
+                    {% if game.rating %}<span>⭐ {{ game.rating }}/5</span>{% endif %}
+                    {% if game.badge %}<span class="badge {{ game.badge }}">{{ game.badge.upper() }}</span>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="game-details">
+            <h2>About {{ game.name }}</h2>
+            <p>{{ game.description or "Experience the excitement of " ~ game.name ~ "! This " ~ game.category.lower() ~ " game offers hours of entertainment with engaging gameplay and smooth controls." }}</p>
+            {% if game.instructions %}
+            <div class="instructions">
+                <h3>How to Play</h3>
+                <p>{{ game.instructions }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="recs-column-flanking">
+         {% for other_game in other_games[half:] %}
+            <a href="/game/{{ other_game.id }}" class="rec-thumbnail-link">
+                <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">
+            </a>
+        {% endfor %}
+        <div class="ad-container" style="margin-top: 15px;">
+            <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="8375076168"></ins>
+        </div>
+    </div>
+</div>

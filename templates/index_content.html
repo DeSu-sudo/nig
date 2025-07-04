@@ -1,0 +1,63 @@
+{% if games_by_section.get('Trending now') %}
+<div class="section trending-section-layout">
+    <div class="trending-info">
+        <div class="section-title">
+            Trending now 
+            <span class="fire-icon">
+                <i data-lucide="flame" style="color: #ff6b35; width: 20px; height: 20px;"></i>
+            </span>
+        </div>
+        <div class="section-subtitle">Play and explore our top trending games across all categories!</div>
+    </div>
+    <div class="carousel-container">
+        <button class="carousel-btn carousel-btn-prev" data-section="trending">
+            <i data-lucide="chevron-left"></i>
+        </button>
+        <div class="games-carousel" data-section="trending">
+            {% for game in games_by_section['Trending now'] %}
+            <div class="game-card" style="background-image: url('/thumbnail/{{ game.id }}')" onclick="location.href='/game/{{ game.id }}'">
+                <div class="game-overlay"></div>
+                {% if game.badge == 'new' %}<div class="new-badge"><i data-lucide="star" style="width: 12px; height: 12px;"></i>NEW</div>{% endif %}
+                {% if game.badge == 'hot' %}<div class="hot-badge"><i data-lucide="flame" style="width: 12px; height: 12px;"></i>HOT</div>{% endif %}
+                <div class="game-title">{{ game.name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-btn carousel-btn-next" data-section="trending">
+            <i data-lucide="chevron-right"></i>
+        </button>
+    </div>
+</div>
+{% endif %}
+
+{% for section_name, games in games_by_section.items() %}
+{% if section_name != 'Trending now' and games %}
+<div class="section">
+    <div class="section-header">
+        <div class="section-title">{{ section_name }}</div>
+    </div>
+    <div class="carousel-container">
+        <button class="carousel-btn carousel-btn-prev" data-section="{{ section_name|lower|replace(' ', '-') }}">
+            <i data-lucide="chevron-left"></i>
+        </button>
+        <div class="games-carousel" data-section="{{ section_name|lower|replace(' ', '-') }}">
+            {% for game in games %}
+            <div class="game-card" style="background-image: url('/thumbnail/{{ game.id }}')" onclick="location.href='/game/{{ game.id }}'">
+                <div class="game-overlay"></div>
+                 {% if game.badge == 'new' %}<div class="new-badge"><i data-lucide="star" style="width: 12px; height: 12px;"></i>NEW</div>{% endif %}
+                {% if game.badge == 'hot' %}<div class="hot-badge"><i data-lucide="flame" style="width: 12px; height: 12px;"></i>HOT</div>{% endif %}
+                <div class="game-title">{{ game.name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-btn carousel-btn-next" data-section="{{ section_name|lower|replace(' ', '-') }}">
+            <i data-lucide="chevron-right"></i>
+        </button>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<div style="text-align: center; margin: 20px 0;">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5485599177157755" data-ad-slot="4818140388" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
