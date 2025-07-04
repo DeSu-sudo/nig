@@ -7,8 +7,10 @@
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png" id="favicon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
-         crossorigin="anonymous"></script>
+    {% if request.path != '/' %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
+     crossorigin="anonymous"></script>
+{% endif %}
 </head>
 <body>
     <div class="container">
