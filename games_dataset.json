@@ -56,10 +56,7 @@
   "minecraft": {
     "name": "Minecraft",
     "section": "Trending now",
-    "category": [
-      "Sandbox",
-      "Adventure"
-    ],
+    "category": ["Sandbox", "Adventure"],
     "iframe_url": "https://eaglercraft.com/mc/1.8.8/",
     "rating": 8.7,
     "featured": true,
