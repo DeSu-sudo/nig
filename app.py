@@ -348,7 +348,7 @@ def api_games():
     return jsonify(games_by_section)
 
 def keep_alive_pinger():
-    url = "https://your-app.onrender.com/"  # Change this to your actual Render URL
+    url = "https://www.cravegames.me/"  # Change this to your actual Render URL
     while True:
         try:
             r = requests.get(url, timeout=10)
