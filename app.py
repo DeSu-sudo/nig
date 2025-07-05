@@ -344,6 +344,24 @@ def api_games():
     games_by_section = get_games_list()
     return jsonify(games_by_section)
 
+import threading
+import time
+import requests
+
+def keep_alive_pinger():
+    url = "https://your-app.onrender.com/"  # Change this to your actual Render URL
+    while True:
+        try:
+            r = requests.get(url, timeout=10)
+            print(f"✅ Keep-alive ping: status {r.status_code}")
+        except Exception as e:
+            print(f"❌ Keep-alive ping failed: {e}")
+        time.sleep(600)  # Wait 600 seconds (10 minutes)
+
+# Start pinger in the background when the server starts
+pinger_thread = threading.Thread(target=keep_alive_pinger, daemon=True)
+pinger_thread.start()
+
 if __name__ == '__main__':
     print("🚀 Starting CraveGames server...")
     app.run(debug=True)
