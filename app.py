@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 import mimetypes
 from datetime import datetime, timedelta
+import threading
+import time
+import requests
 
 app = Flask(__name__)
 
@@ -343,10 +346,6 @@ def api_search():
 def api_games():
     games_by_section = get_games_list()
     return jsonify(games_by_section)
-
-import threading
-import time
-import requests
 
 def keep_alive_pinger():
     url = "https://your-app.onrender.com/"  # Change this to your actual Render URL
