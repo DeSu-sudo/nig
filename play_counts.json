@@ -136,9 +136,9 @@
     ]
   },
   "subway-surfers": {
-    "total_plays": 4,
-    "recent_plays": 4,
-    "last_played": "2025-07-04T08:02:28.841134",
+    "total_plays": 5,
+    "recent_plays": 5,
+    "last_played": "2025-07-08T17:55:50.187451",
     "weekly_plays": [
       {
         "date": "2025-07-03",
@@ -147,6 +147,10 @@
       {
         "date": "2025-07-04",
         "plays": 2
+      },
+      {
+        "date": "2025-07-08",
+        "plays": 1
       }
     ]
   },
@@ -180,6 +184,28 @@
       {
         "date": "2025-07-03",
         "plays": 4
+      }
+    ]
+  },
+  "italian-brainrot-obby-parkour": {
+    "total_plays": 2,
+    "recent_plays": 2,
+    "last_played": "2025-07-08T17:40:05.915648",
+    "weekly_plays": [
+      {
+        "date": "2025-07-08",
+        "plays": 2
+      }
+    ]
+  },
+  "moto-x3m": {
+    "total_plays": 1,
+    "recent_plays": 1,
+    "last_played": "2025-07-08T17:43:16.600474",
+    "weekly_plays": [
+      {
+        "date": "2025-07-08",
+        "plays": 1
       }
     ]
   }

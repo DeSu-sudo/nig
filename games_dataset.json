@@ -225,5 +225,23 @@
     "featured": true,
     "iframe_url": "https://html5.gamedistribution.com/eb45cb884a3140bea17b3070ff6b4d70/?gd_sdk_referrer_url=https://gamedistribution.com/games/brainrot-clicker/",
     "description": "Brainrot Clicker is a hilarious and chaotic idle clicker game that plunges you into a bizarre world of meme-fueled madness. Your mission is simple: tap the screen to earn 'Italian Brainrot Points' and unlock increasingly ridiculous AI-generated characters from the internet\u00e2\u20ac\u2122s wildest corners. With eye-catching visuals, meme-inspired humor, and endless upgrades, Brainrot Clicker offers a weirdly satisfying experience you won\u00e2\u20ac\u2122t want to stop!"
+  },
+    "italian-brainrot-obby-parkour": {
+    "name": "Italian Brainrot Obby Parkour",
+    "section": "Adventure",
+    "category": ["Adventure"],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/ad14e488375b4e41af52a4617f6837d0/?gd_sdk_referrer_url=https://gamedistribution.com/games/italian-brainrot-obby-parkour/",
+    "description": "Italian Brainrot Obby Parkour is a wild and hilarious 2 player platforming experience that blends meme-fueled chaos with classic obby parkour mechanics. Inspired by games like Tower of Hell, this title brings the unpredictable humor of the Italian brainrot meme universe into a 3D climbing challenge. Available characters are: -Tung Tung Sahur -Brr Brr Patapim -Burbaloni Luliloli -Frigo Camelo -Girafa Celestre -Lirili Larila -Orangutini Annaucini -Tralalero Tralala -Vaca Saturno Saturnita"
+  },
+      "moto-x3m": {
+    "name": "Moto X3M Original",
+    "section": "Adventure",
+    "category": ["Platformer"],
+    "rating": 8.7,
+    "featured": true,
+    "iframe_url": "https://html5.gamedistribution.com/5b0abd4c0faa4f5eb190a9a16d5a1b4c/?gd_sdk_referrer_url=https://gamedistribution.com/games/moto-x3m-bike-race-game/",
+    "description": "Moto X3M is an awesome bike racing game with 25 challenging levels. So grab your motorbike, strap on your helmet and grab some airtime over obstacles and beat the clock on amazing off road circuits. Enjoy Moto X3M!"
   }
 }
