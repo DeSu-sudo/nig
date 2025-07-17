@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ title }} - CraveGames</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png" id="favicon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ bust_cache('css/styles.css') }}">
     <meta name="description" content="{{ meta_description or 'Play and explore our top trending games across all categories!' }}">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
@@ -302,10 +302,13 @@
                     const newComment = await response.json();
                     addCommentToDOM(newComment, true);
                     textArea.value = '';
-                } else if (response.status === 429) {
-                    showCustomPrompt('Rate Limit Exceeded', 'You are posting comments too frequently.');
                 } else {
-                    showCustomPrompt('Error', 'Failed to post comment.');
+                    const errorData = await response.json();
+                    if (response.status === 429) {
+                        showCustomPrompt('Rate Limit Exceeded', 'You are posting comments too frequently.');
+                    } else {
+                        showCustomPrompt('Error', errorData.error || 'Failed to post comment.');
+                    }
                 }
             });
         }
@@ -362,14 +365,17 @@
     let clickerInterval;
     function initMakeMorePage() {
         const coinBtn = document.getElementById('big-crave-coin');
-        if (!coinBtn) return; 
+        if (!coinBtn) {
+            if (clickerInterval) clearInterval(clickerInterval);
+            return;
+        }
 
         clearInterval(clickerInterval); // Clear previous interval if navigating back and forth
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const clicksRemainingEl = document.getElementById('clicks-remaining');
         const MAX_CLICKS = 10;
-        const TIME_LIMIT_MS = 60000;
+        const TIME_LIMIT_MS = 60000; 
         
         let sessionClicks = 0;
         let periodStart = Date.now();
@@ -377,8 +383,10 @@
         function updateDisplay() {
             const now = Date.now();
             if (now - periodStart > TIME_LIMIT_MS) {
-                periodStart = now;
-                sessionClicks = 0;
+                if (sessionClicks > 0) { // Only reset if there were clicks
+                    periodStart = now;
+                    sessionClicks = 0;
+                }
             }
             clicksRemainingEl.textContent = Math.max(0, MAX_CLICKS - sessionClicks);
         }
@@ -504,8 +512,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         initializePageScripts();
         window.addEventListener('popstate', e => {
-            if (e.state && e.state.path) loadContent(e.state.path, false);
-            else if (clickerInterval) clearInterval(clickerInterval);
+            if (e.state && e.state.path) {
+                 if (clickerInterval) clearInterval(clickerInterval);
+                loadContent(e.state.path, false);
+            }
         });
         const randomGameBtn = document.getElementById('random-game-btn');
         if (randomGameBtn) randomGameBtn.addEventListener('click', async (e) => {

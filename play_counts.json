@@ -151,7 +151,7 @@
         ]
     },
     "ragdoll-playground": {
-        "total_plays": 32,
+        "total_plays": 34,
         "recent_plays": 5,
         "last_played": "2025-07-04T08:00:46.644176",
         "weekly_plays": [
@@ -161,7 +161,7 @@
             },
             {
                 "date": "2025-07-17",
-                "plays": 11
+                "plays": 13
             }
         ],
         "ratings": [],
@@ -183,13 +183,13 @@
         "rating_count": 0
     },
     "subway-surfers": {
-        "total_plays": 30,
+        "total_plays": 32,
         "recent_plays": 5,
         "last_played": "2025-07-08T17:55:50.187451",
         "weekly_plays": [
             {
                 "date": "2025-07-17",
-                "plays": 13
+                "plays": 15
             }
         ],
         "ratings": [],

@@ -107,6 +107,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 # --- Helper Functions ---
+@app.context_processor
+def utility_processor():
+    def bust_cache(filepath):
+        try:
+            timestamp = int(os.path.getmtime(os.path.join(app.static_folder, filepath)))
+            return f"{url_for('static', filename=filepath)}?v={timestamp}"
+        except (OSError, FileNotFoundError):
+            return url_for('static', filename=filepath)
+    return dict(bust_cache=bust_cache)
+
 def load_games_dataset():
     try:
         with open('games_dataset.json', 'r') as f: return json.load(f)

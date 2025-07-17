@@ -1,6 +1,9 @@
 {% set half = (other_games|length / 2)|round(0, 'floor')|int %}
 <div class="game-page-wrapper">
     <div class="recs-column-flanking">
+        <div style="margin-bottom: 20px;">
+             {% include '_ad_vertical.html' %}
+        </div>
         {% for other_game in other_games[:half] %}
             <a href="/game/{{ other_game.id }}" class="rec-thumbnail-link">
                 <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">
@@ -67,6 +70,10 @@
             {% endif %}
         </div>
         
+        <div style="margin: 40px 0;">
+            {% include '_ad_horizontal.html' %}
+        </div>
+
         <div id="comments-section" class="comments-container" data-game-id="{{ game.id }}">
             <h2>Comments</h2>
             {% if current_user.is_authenticated %}
@@ -85,6 +92,9 @@
     </div>
 
     <div class="recs-column-flanking">
+        <div style="margin-bottom: 20px;">
+            {% include '_ad_vertical.html' %}
+        </div>
          {% for other_game in other_games[half:] %}
             <a href="/game/{{ other_game.id }}" class="rec-thumbnail-link">
                 <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">

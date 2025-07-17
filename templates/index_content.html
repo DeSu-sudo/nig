@@ -30,6 +30,10 @@
 </div>
 {% endif %}
 
+<div style="margin: 40px 0;">
+    {% include '_ad_horizontal.html' %}
+</div>
+
 {% for section_name, games in games_by_section.items() %}
 {% if section_name != 'Trending now' and games %}
 <div class="section">
