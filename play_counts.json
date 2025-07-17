@@ -76,19 +76,18 @@
         "rating_count": 0
     },
     "italian-brainrot-clicker": {
-        "total_plays": 9,
+        "total_plays": 11,
         "recent_plays": 7,
         "last_played": "2025-07-03T18:35:45.271191",
         "weekly_plays": [
             {
-                "date": "2025-07-03",
-                "plays": 7
-            },
-            {
-                "date": "2025-07-09",
+                "date": "2025-07-17",
                 "plays": 2
             }
-        ]
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
     },
     "minecraft": {
         "total_plays": 13,
@@ -183,13 +182,13 @@
         "rating_count": 0
     },
     "subway-surfers": {
-        "total_plays": 32,
+        "total_plays": 33,
         "recent_plays": 5,
         "last_played": "2025-07-08T17:55:50.187451",
         "weekly_plays": [
             {
                 "date": "2025-07-17",
-                "plays": 15
+                "plays": 16
             }
         ],
         "ratings": [],
@@ -255,7 +254,7 @@
         "rating_count": 1
     },
     "italian-brainrot-obby-parkour": {
-        "total_plays": 13,
+        "total_plays": 16,
         "recent_plays": 2,
         "last_played": "2025-07-08T17:40:05.915648",
         "weekly_plays": [
@@ -265,7 +264,7 @@
             },
             {
                 "date": "2025-07-17",
-                "plays": 6
+                "plays": 9
             }
         ],
         "ratings": [],

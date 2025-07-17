@@ -633,6 +633,11 @@ body {
     gap: 15px;
     align-content: start;
 }
+.side-ad-container {
+    grid-column: 1 / -1; /* Make ad span full width of the column */
+    min-height: 250px; /* Reserve space to prevent layout shift */
+    margin-bottom: 15px;
+}
 .rec-thumbnail-link {
     display: block;
     border-radius: 12px;

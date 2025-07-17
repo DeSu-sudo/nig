@@ -13,10 +13,6 @@
                 </div>
             </div>
             
-            <div style="margin-bottom: 20px;">
-                {% include '_ad_horizontal.html' %}
-            </div>
-
             <div class="games-grid">
                 {% for game in games %}
                 <div class="game-card" onclick="location.href='/game/{{ game.id }}'">
@@ -32,6 +28,10 @@
                 {% else %}
                 <p>No games found in this category.</p>
                 {% endfor %}
+            </div>
+
+            <div style="margin-top: 40px;">
+                {% include '_ad_horizontal.html' %}
             </div>
         </div>
     </div>
