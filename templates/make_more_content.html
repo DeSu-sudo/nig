@@ -1,0 +1,27 @@
+<div class="make-more-container">
+    <div class="section-header">
+        <h1 class="section-title">Earn Crave Coins</h1>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns: 1fr;">
+        <div class="stat-card">
+            <div id="all-time-earnings" class="stat-card-value">{{ "{:,}".format(current_user.crave_coins) }}</div>
+            <div class="stat-card-label">Your Crave Coin Balance</div>
+        </div>
+    </div>
+
+    <div class="coin-clicker-container">
+        <div id="big-crave-coin" class="crave-coin-clicker">
+            <div class="crave-coin-logo">C</div>
+        </div>
+        <div class="click-counter">
+            Clicks remaining: <span id="clicks-remaining">10</span>
+        </div>
+        <p class="section-subtitle" style="margin-top: 20px;">You can click the coin up to 10 times per minute.</p>
+    </div>
+
+    <div class="ads-container" style="margin-top: 40px;">
+        <div class="ad-placeholder" data-ad-slot="YOUR_AD_SLOT_ID_1">Google Ad Placeholder</div>
+    </div>
+
+</div>

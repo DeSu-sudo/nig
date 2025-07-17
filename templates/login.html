@@ -1,0 +1,21 @@
+<div class="auth-form-container">
+    <form method="POST" action="{{ url_for('login') }}" id="login-form" novalidate>
+        {{ form.hidden_tag() }}
+        <h2>Login</h2>
+        <div id="form-errors" class="form-errors"></div>
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", placeholder="Enter your username") }}
+            <div id="username-errors" class="field-errors"></div>
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Enter your password") }}
+            <div id="password-errors" class="field-errors"></div>
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="auth-button") }}
+        </div>
+        <p class="auth-switch">Don't have an account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+<div class="inventory-container">
+    <div class="section-header">
+        <h1 class="section-title">My Avatar Collection</h1>
+        <p class="section-subtitle">Select an avatar to display on your profile.</p>
+    </div>
+
+    <div class="inventory-grid">
+        {% for item in items %}
+        <div class="inventory-card {% if current_user.active_avatar_item_id == item.id %}active{% endif %}" data-item-id="{{ item.id }}">
+            <div class="item-image-wrapper">
+                <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.name }}" class="item-image">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">{{ item.name }}</h3>
+                <button class="set-avatar-btn" data-item-id="{{ item.id }}">
+                    {% if current_user.active_avatar_item_id == item.id %}
+                        Active
+                    {% else %}
+                        Select
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-items-message">
+            <p>You don't own any avatars yet!</p>
+            <a href="/store" class="go-to-store-btn">Visit the Store</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

@@ -6,9 +6,6 @@
                 <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">
             </a>
         {% endfor %}
-        <div class="ad-container" style="margin-top: 15px;">
-            <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="8375076168"></ins>
-        </div>
     </div>
 
     <div class="game-content-column">
@@ -27,36 +24,63 @@
         <div class="game-player-bar">
             <div class="player-bar-info">
                 <span class="player-bar-title">{{ game.name }}</span>
-                <span class="player-bar-branding">On cravegames.me</span>
             </div>
-            <button class="fullscreen-btn" id="fullscreenBtn" title="Fullscreen">
-                <i data-lucide="maximize" style="width: 20px; height: 20px;"></i>
-            </button>
+            <div class="player-bar-actions">
+                {% if current_user.is_authenticated %}
+                <button id="favorite-btn" class="favorite-btn {{ 'favorited' if game.is_favorite }}" data-game-id="{{ game.id }}" title="Add to Favorites">
+                    <i data-lucide="heart"></i>
+                </button>
+                {% endif %}
+                <button class="fullscreen-btn" id="fullscreenBtn" title="Fullscreen">
+                    <i data-lucide="maximize"></i>
+                </button>
+            </div>
         </div>
-
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5485599177157755" data-ad-slot="4818140388" data-ad-format="auto" data-full-width-responsive="true"></ins>
 
         <div class="game-header">
             <img src="/thumbnail/{{ game.id }}" alt="{{ game.name }}" class="game-thumbnail">
             <div class="game-info">
                 <h1>{{ game.name }}</h1>
                 <div class="game-meta">
-                    <span>{{ game.category }}</span>
-                    {% if game.rating %}<span>⭐ {{ game.rating }}/5</span>{% endif %}
-                    {% if game.badge %}<span class="badge {{ game.badge }}">{{ game.badge.upper() }}</span>{% endif %}
+                    <div class="star-rating" data-game-id="{{ game.id }}" data-average-rating="{{ game.average_rating }}" data-interactive="{{ 'true' if current_user.is_authenticated else 'false' }}">
+                        {% set rounded_rating = game.average_rating|round|int %}
+                        {% for i in range(1, 6) %}
+                            <i class="star {{ 'filled' if i <= rounded_rating else '' }}" data-lucide="star" data-value="{{i}}"></i>
+                        {% endfor %}
+                    </div>
+                    {% if current_user.is_authenticated %}
+                        <span class="rating-score">{{ "%.1f"|format(game.average_rating) }}/5</span>
+                        <span class="rating-count">({{ game.rating_count }} ratings)</span>
+                    {% else %}
+                        <span class="rating-score" style="font-size: 14px; color: #aaa;">Log in to rate and see average</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
 
         <div class="game-details">
             <h2>About {{ game.name }}</h2>
-            <p>{{ game.description or "Experience the excitement of " ~ game.name ~ "! This " ~ game.category.lower() ~ " game offers hours of entertainment with engaging gameplay and smooth controls." }}</p>
+            <p>{{ game.description or "No description available for this game." }}</p>
             {% if game.instructions %}
-            <div class="instructions">
-                <h3>How to Play</h3>
-                <p>{{ game.instructions }}</p>
-            </div>
+            <h3>How to Play</h3>
+            <p>{{ game.instructions }}</p>
             {% endif %}
+        </div>
+        
+        <div id="comments-section" class="comments-container" data-game-id="{{ game.id }}">
+            <h2>Comments</h2>
+            {% if current_user.is_authenticated %}
+            <form id="comment-form" class="comment-form">
+                <textarea name="comment" placeholder="Write a comment..." required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+            {% else %}
+            <p class="comment-login-prompt">
+                <a href="/login" data-no-spa>Log in</a> to post a comment.
+            </p>
+            {% endif %}
+            <div id="comments-list" class="comments-list">
+                </div>
         </div>
     </div>
 
@@ -66,8 +90,5 @@
                 <img src="/thumbnail/{{ other_game.id }}" alt="{{ other_game.name }}">
             </a>
         {% endfor %}
-        <div class="ad-container" style="margin-top: 15px;">
-            <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="8375076168"></ins>
-        </div>
     </div>
 </div>

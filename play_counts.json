@@ -1,212 +1,389 @@
 {
-  "infinite-craft": {
-    "total_plays": 2,
-    "recent_plays": 2,
-    "last_played": "2025-07-03T14:15:17.038354",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 2
-      }
-    ]
-  },
-  "short-life": {
-    "total_plays": 6,
-    "recent_plays": 6,
-    "last_played": "2025-07-03T20:29:32.127288",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 6
-      }
-    ]
-  },
-  "friday-night-funkin": {
-    "total_plays": 1,
-    "recent_plays": 1,
-    "last_played": "2025-07-03T14:17:59.456030",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 1
-      }
-    ]
-  },
-  "crazy-motorcycle": {
-    "total_plays": 13,
-    "recent_plays": 13,
-    "last_played": "2025-07-03T18:34:47.221285",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 13
-      }
-    ]
-  },
-  "geometry-dash": {
-    "total_plays": 1,
-    "recent_plays": 1,
-    "last_played": "2025-07-03T14:23:40.228121",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 1
-      }
-    ]
-  },
-  "italian-brainrot-clicker": {
-    "total_plays": 7,
-    "recent_plays": 7,
-    "last_played": "2025-07-03T18:35:45.271191",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 7
-      }
-    ]
-  },
-  "minecraft": {
-    "total_plays": 6,
-    "recent_plays": 6,
-    "last_played": "2025-07-03T19:20:34.497916",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 6
-      }
-    ]
-  },
-  "learn-to-fly-3": {
-    "total_plays": 8,
-    "recent_plays": 8,
-    "last_played": "2025-07-03T20:50:34.420282",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 8
-      }
-    ]
-  },
-  "duck-life": {
-    "total_plays": 3,
-    "recent_plays": 3,
-    "last_played": "2025-07-03T14:24:06.268588",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 3
-      }
-    ]
-  },
-  "happy-wheels": {
-    "total_plays": 4,
-    "recent_plays": 4,
-    "last_played": "2025-07-03T14:24:53.436632",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 4
-      }
-    ]
-  },
-  "ragdoll-playground": {
-    "total_plays": 5,
-    "recent_plays": 5,
-    "last_played": "2025-07-04T08:00:46.644176",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 3
-      },
-      {
-        "date": "2025-07-04",
-        "plays": 2
-      }
-    ]
-  },
-  "brainrot-clicker": {
-    "total_plays": 2,
-    "recent_plays": 2,
-    "last_played": "2025-07-03T15:12:51.858536",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 2
-      }
-    ]
-  },
-  "subway-surfers": {
-    "total_plays": 5,
-    "recent_plays": 5,
-    "last_played": "2025-07-08T17:55:50.187451",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 2
-      },
-      {
-        "date": "2025-07-04",
-        "plays": 2
-      },
-      {
-        "date": "2025-07-08",
-        "plays": 1
-      }
-    ]
-  },
-  "cubes-2048-io": {
-    "total_plays": 1,
-    "recent_plays": 1,
-    "last_played": "2025-07-03T17:08:41.021659",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 1
-      }
-    ]
-  },
-  "mr-drifter": {
-    "total_plays": 2,
-    "recent_plays": 2,
-    "last_played": "2025-07-03T17:19:49.198666",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 2
-      }
-    ]
-  },
-  "short-life-2": {
-    "total_plays": 4,
-    "recent_plays": 4,
-    "last_played": "2025-07-03T20:05:34.727808",
-    "weekly_plays": [
-      {
-        "date": "2025-07-03",
-        "plays": 4
-      }
-    ]
-  },
-  "italian-brainrot-obby-parkour": {
-    "total_plays": 2,
-    "recent_plays": 2,
-    "last_played": "2025-07-08T17:40:05.915648",
-    "weekly_plays": [
-      {
-        "date": "2025-07-08",
-        "plays": 2
-      }
-    ]
-  },
-  "moto-x3m": {
-    "total_plays": 1,
-    "recent_plays": 1,
-    "last_played": "2025-07-08T17:43:16.600474",
-    "weekly_plays": [
-      {
-        "date": "2025-07-08",
-        "plays": 1
-      }
-    ]
-  }
+    "infinite-craft": {
+        "total_plays": 4,
+        "recent_plays": 2,
+        "last_played": "2025-07-03T14:15:17.038354",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "short-life": {
+        "total_plays": 29,
+        "recent_plays": 6,
+        "last_played": "2025-07-03T20:29:32.127288",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 11
+            }
+        ],
+        "ratings": [
+            4
+        ],
+        "average_rating": 4.0,
+        "rating_count": 1
+    },
+    "friday-night-funkin": {
+        "total_plays": 7,
+        "recent_plays": 1,
+        "last_played": "2025-07-03T14:17:59.456030",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 4
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "crazy-motorcycle": {
+        "total_plays": 37,
+        "recent_plays": 13,
+        "last_played": "2025-07-03T18:34:47.221285",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 2
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 8
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "geometry-dash": {
+        "total_plays": 7,
+        "recent_plays": 1,
+        "last_played": "2025-07-03T14:23:40.228121",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "italian-brainrot-clicker": {
+        "total_plays": 9,
+        "recent_plays": 7,
+        "last_played": "2025-07-03T18:35:45.271191",
+        "weekly_plays": [
+            {
+                "date": "2025-07-03",
+                "plays": 7
+            },
+            {
+                "date": "2025-07-09",
+                "plays": 2
+            }
+        ]
+    },
+    "minecraft": {
+        "total_plays": 13,
+        "recent_plays": 6,
+        "last_played": "2025-07-03T19:20:34.497916",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 3
+            }
+        ],
+        "ratings": [
+            4
+        ],
+        "average_rating": 4.0,
+        "rating_count": 1
+    },
+    "learn-to-fly-3": {
+        "total_plays": 15,
+        "recent_plays": 8,
+        "last_played": "2025-07-03T20:50:34.420282",
+        "weekly_plays": [
+            {
+                "date": "2025-07-03",
+                "plays": 8
+            },
+            {
+                "date": "2025-07-09",
+                "plays": 7
+            }
+        ]
+    },
+    "duck-life": {
+        "total_plays": 10,
+        "recent_plays": 3,
+        "last_played": "2025-07-03T14:24:06.268588",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 7
+            }
+        ],
+        "ratings": [],
+        "average_rating": 4.0,
+        "rating_count": 1
+    },
+    "happy-wheels": {
+        "total_plays": 6,
+        "recent_plays": 4,
+        "last_played": "2025-07-03T14:24:53.436632",
+        "weekly_plays": [
+            {
+                "date": "2025-07-03",
+                "plays": 4
+            },
+            {
+                "date": "2025-07-09",
+                "plays": 2
+            }
+        ]
+    },
+    "ragdoll-playground": {
+        "total_plays": 32,
+        "recent_plays": 5,
+        "last_played": "2025-07-04T08:00:46.644176",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 1
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 11
+            }
+        ],
+        "ratings": [],
+        "average_rating": 3.0,
+        "rating_count": 1
+    },
+    "brainrot-clicker": {
+        "total_plays": 3,
+        "recent_plays": 2,
+        "last_played": "2025-07-03T15:12:51.858536",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 1
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "subway-surfers": {
+        "total_plays": 30,
+        "recent_plays": 5,
+        "last_played": "2025-07-08T17:55:50.187451",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 13
+            }
+        ],
+        "ratings": [],
+        "average_rating": 5.0,
+        "rating_count": 1
+    },
+    "cubes-2048-io": {
+        "total_plays": 18,
+        "recent_plays": 1,
+        "last_played": "2025-07-03T17:08:41.021659",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 3
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 10
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "mr-drifter": {
+        "total_plays": 17,
+        "recent_plays": 2,
+        "last_played": "2025-07-03T17:19:49.198666",
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 4
+            }
+        ],
+        "ratings": [
+            3,
+            4,
+            5,
+            3,
+            2,
+            1,
+            4
+        ],
+        "average_rating": 1.0,
+        "rating_count": 1
+    },
+    "short-life-2": {
+        "total_plays": 28,
+        "recent_plays": 4,
+        "last_played": "2025-07-03T20:05:34.727808",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 1
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 15
+            }
+        ],
+        "ratings": [],
+        "average_rating": 5.0,
+        "rating_count": 1
+    },
+    "italian-brainrot-obby-parkour": {
+        "total_plays": 13,
+        "recent_plays": 2,
+        "last_played": "2025-07-08T17:40:05.915648",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 2
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 6
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "moto-x3m": {
+        "total_plays": 10,
+        "recent_plays": 1,
+        "last_played": "2025-07-08T17:43:16.600474",
+        "weekly_plays": [
+            {
+                "date": "2025-07-10",
+                "plays": 2
+            },
+            {
+                "date": "2025-07-17",
+                "plays": 5
+            }
+        ],
+        "ratings": [],
+        "average_rating": 5.0,
+        "rating_count": 1
+    },
+    "duck-life-3": {
+        "total_plays": 4,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 3.0,
+        "rating_count": 1
+    },
+    "five-nights-at-freddys": {
+        "total_plays": 3,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "five-nights-at-freddys-2": {
+        "total_plays": 6,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 4
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "duck-life-4": {
+        "total_plays": 2,
+        "weekly_plays": [
+            {
+                "date": "2025-07-09",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "sm64": {
+        "total_plays": 5,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 3
+            }
+        ],
+        "ratings": [],
+        "average_rating": 4.0,
+        "rating_count": 1
+    },
+    "duck-life-2": {
+        "total_plays": 2,
+        "weekly_plays": [
+            {
+                "date": "2025-07-09",
+                "plays": 2
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "five-nights-at-freddys-4": {
+        "total_plays": 6,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 6
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    },
+    "five-nights-at-freddys-3": {
+        "total_plays": 4,
+        "weekly_plays": [
+            {
+                "date": "2025-07-17",
+                "plays": 4
+            }
+        ],
+        "ratings": [],
+        "average_rating": 0,
+        "rating_count": 0
+    }
 }

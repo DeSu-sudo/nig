@@ -1,0 +1,51 @@
+<div class="customize-container" data-equipped-avatar='{{ equipped_avatar_items | tojson | safe }}' data-home-layout='{{ home_layout | tojson | safe}}'>
+    <div class="editor-tabs">
+        <button class="editor-tab-btn active" data-tab="avatar">Avatar</button>
+        <button class="editor-tab-btn" data-tab="home">Home</button>
+    </div>
+
+    <div id="avatar-editor" class="editor-panel active">
+        <div class="editor-main-panel">
+            <div class="avatar-display-area">
+                <img src="https://placehold.co/300x400/2c2c2e/777?text=Your+Avatar" alt="User Avatar" class="avatar-base">
+                
+                <div class="avatar-slot hat-slot"></div>
+                <div class="avatar-slot accessory-slot"></div>
+                <div class="avatar-slot shirt-slot"></div>
+            </div>
+        </div>
+        <div class="editor-inventory-panel">
+            <h3>Your Avatar Items</h3>
+            <div id="avatar-inventory-grid" class="inventory-grid">
+                {% for item in avatar_inventory %}
+                    <div class="inventory-item" data-item-id="{{ item.id }}" data-item-type="{{ item.item_type }}" data-item-image="{{ item.image_url }}" title="{{ item.name }}">
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                    </div>
+                {% else %}
+                    <p>You have no avatar items. Visit the <a href="/store">store</a>!</p>
+                {% endfor %}
+            </div>
+            <button class="save-button" id="save-avatar-btn">Save Avatar</button>
+        </div>
+    </div>
+
+    <div id="home-editor" class="editor-panel">
+        <div class="editor-main-panel">
+            <div class="home-display-area" id="home-grid">
+                </div>
+        </div>
+        <div class="editor-inventory-panel">
+            <h3>Your Furniture</h3>
+            <div id="home-inventory-grid" class="inventory-grid">
+                 {% for item in home_inventory %}
+                    <div class="inventory-item" data-item-id="{{ item.id }}" data-item-type="{{ item.item_type }}" data-item-image="{{ item.image_url }}" title="{{ item.name }}">
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                    </div>
+                {% else %}
+                    <p>You have no furniture. Visit the <a href="/store">store</a>!</p>
+                {% endfor %}
+            </div>
+            <button class="save-button" id="save-home-btn">Save Home</button>
+        </div>
+    </div>
+</div>

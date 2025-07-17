@@ -1,26 +1,34 @@
-<div class="content-wrapper" style="display: flex;">
-    <div class="content-column" style="flex: 1;">
+<div class="content-wrapper">
+    <div class="content-column">
         <div class="section">
             <div class="section-header">
-                <div class="section-title">{{ category_name }} Games</div>
+                <h1 class="section-title">{{ category_name }} Games</h1>
+                <div class="sort-container">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by" name="sort" data-category="{{ category_name }}">
+                        <option value="play_count" {% if current_sort == 'play_count' %}selected{% endif %}>Most Played</option>
+                        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+                        <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest</option>
+                    </select>
+                </div>
             </div>
             
             <div class="games-grid">
                 {% for game in games %}
-                <div class="game-card" style="background-image: url('/thumbnail/{{ game.id }}')" onclick="location.href='/game/{{ game.id }}'">
-                    <div class="game-overlay"></div>
-                    {% if game.badge == 'new' %}<div class="new-badge"><i data-lucide="star" style="width: 12px; height: 12px;"></i> NEW</div>{% endif %}
-                    {% if game.badge == 'hot' %}<div class="hot-badge"><i data-lucide="flame" style="width: 12px; height: 12px;"></i> HOT</div>{% endif %}
-                    <div class="game-title">{{ game.name }}</div>
+                <div class="game-card" onclick="location.href='/game/{{ game.id }}'">
+                    <img src="/thumbnail/{{ game.id }}" alt="{{ game.name }}" class="game-card-img">
+                    <div class="game-overlay">
+                         <div class="game-title">{{ game.name }}</div>
+                         <div class="game-card-stats">
+                            <span><i data-lucide="play-circle"></i> {{ game.play_count }}</span>
+                            <span><i data-lucide="star"></i> {{ "%.1f"|format(game.average_rating) }}</span>
+                         </div>
+                    </div>
                 </div>
                 {% else %}
                 <p>No games found in this category.</p>
                 {% endfor %}
             </div>
         </div>
-        <ins class="adsbygoogle" style="display:block; margin-top: 20px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="4818140388" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    </div>
-    <div class="ad-column" style="width: 180px; margin-left: 20px; text-align: center;">
-        <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px;" data-ad-client="ca-pub-5485599177157755" data-ad-slot="8375076168"></ins>
     </div>
 </div>

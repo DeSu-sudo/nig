@@ -1,0 +1,21 @@
+<div class="content-wrapper">
+    <div class="content-column">
+        <div class="section">
+            <div class="section-header">
+                <h1 class="section-title">My Favorites</h1>
+            </div>
+            <div class="games-grid">
+                {% for game in games %}
+                <div class="game-card" onclick="location.href='/game/{{ game.id }}'">
+                    <img src="/thumbnail/{{ game.id }}" alt="{{ game.name }}" class="game-card-img">
+                    <div class="game-overlay">
+                         <div class="game-title">{{ game.name }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <p>You haven't favorited any games yet. Click the heart icon on a game page to add it to your favorites!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

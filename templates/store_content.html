@@ -1,0 +1,30 @@
+<div class="store-container">
+    <div class="section-header">
+        <h1 class="section-title">Avatar Store</h1>
+        <p class="section-subtitle">Use your Crave Coins to buy new collectible avatars!</p>
+    </div>
+
+    <div class="store-grid">
+        {% for item in items %}
+        <div class="store-item-card">
+            <div class="item-image-wrapper">
+                <img src="{{ url_for('static', filename=item.image_url) }}" alt="{{ item.name }}" class="item-image">
+            </div>
+            <div class="item-details">
+                <h3 class="item-name">{{ item.name }}</h3>
+                <div class="item-price">
+                    <div class="crave-coin-logo small">C</div>
+                    <span>{{ "{:,}".format(item.price) }}</span>
+                </div>
+                {% if item.id in user_inventory_ids %}
+                    <button class="buy-button owned" disabled>Owned</button>
+                {% else %}
+                    <button class="buy-button" data-item-id="{{ item.id }}" data-item-price="{{ item.price }}">Buy</button>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <p>There are no items in the store right now. Check back later!</p>
+        {% endfor %}
+    </div>
+</div>

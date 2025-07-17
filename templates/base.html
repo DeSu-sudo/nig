@@ -3,237 +3,563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ title }} - CraveGames</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.png" id="favicon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <meta name="description" content="{{ meta_description or 'Play and explore our top trending games across all categories! Friday night funkin, Geometry dash, Subway Surfers.' }}">
+    <meta name="description" content="{{ meta_description or 'Play and explore our top trending games across all categories!' }}">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    {% if request.path != '/' %}
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5485599177157755"
      crossorigin="anonymous"></script>
-{% endif %}
 </head>
 <body>
     <div class="container">
         <nav class="sidebar">
             <div class="logo">CraveGames</div>
             <a href="/" class="sidebar-item {{ 'active' if active_page == 'Home' }}">
-                <span class="sidebar-icon"><i data-lucide="home"></i></span>
-                <span class="sidebar-text">Home</span>
+                <span class="sidebar-icon"><i data-lucide="home"></i></span><span class="sidebar-text">Home</span>
             </a>
+            <a href="#" id="random-game-btn" class="sidebar-item">
+                <span class="sidebar-icon"><i data-lucide="shuffle"></i></span><span class="sidebar-text">Random Game</span>
+            </a>
+            {% if current_user.is_authenticated %}
+            <a href="/favorites" class="sidebar-item {{ 'active' if active_page == 'Favorites' }}">
+                <span class="sidebar-icon"><i data-lucide="heart"></i></span><span class="sidebar-text">Favorites</span>
+            </a>
+            {% endif %}
             <hr class="sidebar-divider">
-            <a href="/category/Platformer" class="sidebar-item {{ 'active' if active_page == 'Platformer' }}">
+            {% for category in all_categories %}
+            <a href="/category/{{ category }}" class="sidebar-item {{ 'active' if active_page == category }}">
                 <span class="sidebar-icon"><i data-lucide="gamepad-2"></i></span>
-                <span class="sidebar-text">Platformer</span>
+                <span class="sidebar-text">{{ category }}</span>
             </a>
-            <a href="/category/Action" class="sidebar-item {{ 'active' if active_page == 'Action' }}">
-                <span class="sidebar-icon"><i data-lucide="zap"></i></span>
-                <span class="sidebar-text">Action</span>
-            </a>
-            <a href="/category/Adventure" class="sidebar-item {{ 'active' if active_page == 'Adventure' }}">
-                <span class="sidebar-icon"><i data-lucide="compass"></i></span>
-                <span class="sidebar-text">Adventure</span>
-            </a>
-            <a href="/category/Clicker" class="sidebar-item {{ 'active' if active_page == 'Clicker' }}">
-                <span class="sidebar-icon"><i data-lucide="mouse-pointer-click"></i></span>
-                <span class="sidebar-text">Clicker</span>
-            </a>
-            <a href="/category/Beauty" class="sidebar-item {{ 'active' if active_page == 'Beauty' }}">
-                <span class="sidebar-icon"><i data-lucide="star"></i></span>
-                <span class="sidebar-text">Beauty</span>
-            </a>
+            {% endfor %}
             <hr class="sidebar-divider">
+            <a href="/store" class="sidebar-item {{ 'active' if active_page == 'Store' }}">
+                <span class="sidebar-icon"><i data-lucide="store"></i></span><span class="sidebar-text">Store</span>
+            </a>
+             {% if not current_user.is_authenticated %}
+            <hr class="sidebar-divider">
+                <a href="/login" class="sidebar-item {{ 'active' if active_page == 'Login' }}">
+                    <span class="sidebar-icon"><i data-lucide="log-in"></i></span><span class="sidebar-text">Login</span>
+                </a>
+                <a href="/register" class="sidebar-item {{ 'active' if active_page == 'Register' }}">
+                    <span class="sidebar-icon"><i data-lucide="user-plus"></i></span><span class="sidebar-text">Register</span>
+                </a>
+            {% endif %}
+
+            {% if current_user.is_authenticated %}
+            <div class="sidebar-user-info">
+                <img src="{{ url_for('static', filename=current_user.active_avatar.image_url) if current_user.active_avatar else url_for('static', filename='images/avatar_parts/default.png') }}" alt="User Avatar" class="sidebar-avatar">
+                <span class="sidebar-username">{{ current_user.username }}</span>
+                <a href="/inventory" class="sidebar-action-btn" title="My Collection">
+                    <i data-lucide="layout-grid"></i>
+                </a>
+                <a href="/logout" class="sidebar-action-btn" title="Logout" data-no-spa>
+                    <i data-lucide="log-out"></i>
+                </a>
+            </div>
+            {% endif %}
         </nav>
 
         <div class="main-content">
-            <div class="header">
-                 <div class="search-container">
-                    <div class="search-icon"><i data-lucide="search"></i></div>
-                    <input type="text" class="search-input" placeholder="Search">
+            <header class="header">
+                <div class="search-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search for games...">
                     <div class="search-results" id="search-results-dropdown"></div>
                 </div>
-            </div>
-            
+                <div class="header-actions">
+                    <div class="crave-coins-container">
+                        <div class="crave-coins-display" id="crave-coins-toggle">
+                            <div class="crave-coin-logo">C</div>
+                            <span class="crave-coin-value" id="crave-coin-balance">
+                                {% if current_user.is_authenticated %}
+                                    {{ "{:,}".format(current_user.crave_coins) }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="crave-coins-menu" id="crave-coins-menu">
+                            {% if current_user.is_authenticated %}
+                                <a href="/make-more" class="crave-menu-item">Make More</a>
+                            {% else %}
+                                <a href="/login" class="crave-menu-item auth-prompt-btn" data-no-spa>Login</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </header>
             <div id="content-container">
                 {% include content_template %}
             </div>
         </div>
     </div>
 
-    <script>
-        // This function needs to be called on initial load and after new content is fetched.
-        function initializePageScripts() {
-            // Re-initialize Lucide icons for any new content.
-            lucide.createIcons();
+    <div id="custom-prompt-overlay" class="prompt-overlay">
+        <div id="custom-prompt" class="prompt-box">
+            <h2 id="prompt-title"></h2>
+            <p id="prompt-message"></p>
+            <button id="prompt-close-btn" class="prompt-button">OK</button>
+        </div>
+    </div>
 
-            // All scripts that act on page content go here.
-            // For example, the carousel functionality from your original file.
-            document.querySelectorAll('.carousel-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const section = button.dataset.section;
-                    const carousel = document.querySelector(`[data-section="${section}"].games-carousel`);
-                    const cardWidth = 240; // Card width + gap
-                    const isNext = button.classList.contains('carousel-btn-next');
-                    const targetScroll = isNext ? carousel.scrollLeft + cardWidth * 3 : carousel.scrollLeft - cardWidth * 3;
-                    carousel.scrollTo({ left: targetScroll, behavior: 'smooth' });
+<script>
+    const contentContainer = document.getElementById('content-container');
+
+    function showCustomPrompt(title, message) {
+        document.getElementById('prompt-title').textContent = title;
+        document.getElementById('prompt-message').textContent = message;
+        document.getElementById('custom-prompt-overlay').classList.add('active');
+    }
+
+    function bindSPALinks() {
+        document.querySelectorAll('a[href^="/"]:not([data-no-spa])').forEach(link => {
+            if (link.dataset.spaBound) return;
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadContent(link.getAttribute('href'));
+            });
+            link.dataset.spaBound = 'true';
+        });
+    }
+
+    function initializePageScripts() {
+        lucide.createIcons();
+        bindSPALinks();
+        document.querySelectorAll('.carousel-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const carousel = button.closest('.carousel-container').querySelector('.games-carousel');
+                const cardWidth = carousel.querySelector('.game-card')?.offsetWidth + 10;
+                carousel.scrollBy({ left: button.classList.contains('carousel-btn-next') ? cardWidth * 3 : -cardWidth * 3, behavior: 'smooth' });
+            });
+        });
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const gameFrame = document.getElementById('gameFrame');
+        if (fullscreenBtn && gameFrame) {
+            fullscreenBtn.addEventListener('click', () => gameFrame.requestFullscreen().catch(err => console.error(err)));
+        }
+        document.querySelectorAll('.adsbygoogle').forEach(ad => { (adsbygoogle = window.adsbygoogle || []).push({}); });
+        initRatings();
+        initFavorites();
+        initComments();
+        initSorting();
+        initAuthForms();
+        initCraveCoins();
+        initMakeMorePage();
+        initStore();
+        initInventoryPage();
+    }
+
+    async function loadContent(url, pushState = true) {
+        contentContainer.style.opacity = '0.5';
+        try {
+            const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}partial=true`);
+            if (!response.ok) throw new Error(`Failed to load`);
+            const data = await response.json();
+            if (pushState) history.pushState({ path: url }, '', url);
+            document.title = `${data.title} - CraveGames`;
+            contentContainer.innerHTML = data.html;
+            updateActiveSidebar(url.split('?')[0]);
+            initializePageScripts();
+        } catch (error) {
+            console.error('Failed to load page content:', error);
+            window.location.href = url;
+        } finally {
+            contentContainer.style.opacity = '1';
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function updateActiveSidebar(path) {
+        document.querySelectorAll('.sidebar-item').forEach(link => {
+            link.classList.remove('active');
+            const linkPath = link.getAttribute('href');
+            if (linkPath === path) link.classList.add('active');
+        });
+    }
+
+    function initRatings() {
+        const ratingContainer = document.querySelector('.star-rating');
+        if (!ratingContainer) return;
+
+        if (ratingContainer.dataset.interactive === "true") {
+            const stars = Array.from(ratingContainer.querySelectorAll('.star'));
+            const gameId = ratingContainer.dataset.gameId;
+            let currentRating = parseFloat(ratingContainer.dataset.averageRating) || 0;
+            const updateStars = (rating) => {
+                const rounded = Math.round(rating);
+                stars.forEach(s => s.classList.toggle('filled', parseInt(s.dataset.value) <= rounded));
+            };
+            updateStars(currentRating);
+            stars.forEach(star => {
+                star.addEventListener('mousemove', () => {
+                    const hoverValue = parseInt(star.dataset.value);
+                    stars.forEach(s => s.classList.toggle('filled', parseInt(s.dataset.value) <= hoverValue));
                 });
             });
-
-            // Re-attach fullscreen button listener if it exists on the page
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            const gameFrame = document.getElementById('gameFrame');
-            if (fullscreenBtn && gameFrame) {
-                fullscreenBtn.addEventListener('click', () => {
-                    if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
-                    else if (gameFrame.mozRequestFullScreen) gameFrame.mozRequestFullScreen();
-                    else if (gameFrame.webkitRequestFullscreen) gameFrame.webkitRequestFullscreen();
-                    else if (gameFrame.msRequestFullscreen) gameFrame.msRequestFullscreen();
+            ratingContainer.addEventListener('mouseleave', () => updateStars(currentRating));
+            stars.forEach(star => {
+                star.addEventListener('click', async () => {
+                    const ratingValue = parseInt(star.dataset.value);
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const response = await fetch(`/api/rate/${gameId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+                        body: JSON.stringify({ rating: ratingValue })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        showCustomPrompt('Error', data.error || 'Could not submit rating.');
+                        updateStars(currentRating);
+                        return;
+                    }
+                    currentRating = data.average_rating;
+                    ratingContainer.dataset.averageRating = currentRating;
+                    document.querySelector('.rating-score').textContent = `${data.average_rating.toFixed(1)}/5`;
+                    document.querySelector('.rating-count').textContent = `(${data.rating_count} ratings)`;
+                    updateStars(currentRating);
+                    showCustomPrompt("Success!", "Thanks for rating the game.");
                 });
-            }
-
-            // Push ads to any new ad slots
-            document.querySelectorAll('.adsbygoogle').forEach(ad => {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+        } else {
+            ratingContainer.addEventListener('click', () => {
+                showCustomPrompt('Login Required', 'You must be logged in to rate a game. Please create an account or log in.');
             });
         }
+    }
+    
+    function initFavorites() {
+        const favButton = document.getElementById('favorite-btn');
+        if (!favButton) return;
+        favButton.addEventListener('click', async () => {
+            const gameId = favButton.dataset.gameId;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch(`/api/favorite/${gameId}`, { method: 'POST', headers: { 'X-CSRF-Token': csrfToken }});
+            if (!response.ok) { showCustomPrompt('Error', 'Could not update favorite status.'); return; }
+            const data = await response.json();
+            favButton.classList.toggle('favorited', data.is_favorited);
+        });
+    }
+    
+    function initComments() {
+        const commentsSection = document.getElementById('comments-section');
+        if (!commentsSection) return;
+        
+        const commentsList = document.getElementById('comments-list');
+        const gameId = commentsSection.dataset.gameId;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const contentContainer = document.getElementById('content-container');
+        function addCommentToDOM(comment, isNew) {
+            const commentEl = document.createElement('div');
+            commentEl.className = 'comment';
+            
+            const avatarImg = `<img src="${comment.avatar_url}" alt="${comment.username}'s avatar" class="comment-avatar">`;
+            
+            commentEl.innerHTML = `
+                ${avatarImg}
+                <div class="comment-content">
+                    <div class="comment-meta">
+                        <span class="comment-author">by ${comment.username}</span>
+                        <span class="comment-date">${new Date(comment.timestamp).toLocaleString()}</span>
+                    </div>
+                    <p class="comment-text">${comment.text}</p>
+                </div>`;
 
-            // Initial setup for scripts on first page load
-            initializePageScripts();
+            if (isNew) {
+                if (commentsList.querySelector('p')) commentsList.innerHTML = '';
+                commentsList.prepend(commentEl);
+            } else {
+                commentsList.appendChild(commentEl);
+            }
+        }
 
-            // --- Core Navigation Logic ---
-            async function loadContent(url, pushState = true) {
-                // Add a loading indicator if desired
-                contentContainer.style.opacity = '0.5';
+        async function fetchComments(page) {
+            const response = await fetch(`/api/comments/${gameId}?page=${page}`);
+            const data = await response.json();
+            if (page === 1 && !data.comments.length) {
+                 if (commentsList) commentsList.innerHTML = '<p>No comments yet. Be the first!</p>';
+            }
+            data.comments.forEach(c => addCommentToDOM(c, false));
+        }
+
+        const commentForm = document.getElementById('comment-form');
+        if (commentForm) {
+            commentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const textArea = commentForm.querySelector('textarea');
+                const text = textArea.value.trim();
+                if (!text) return;
+
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const response = await fetch(`/api/comments/${gameId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+                    body: JSON.stringify({ text })
+                });
+
+                if (response.ok) {
+                    const newComment = await response.json();
+                    addCommentToDOM(newComment, true);
+                    textArea.value = '';
+                } else if (response.status === 429) {
+                    showCustomPrompt('Rate Limit Exceeded', 'You are posting comments too frequently.');
+                } else {
+                    showCustomPrompt('Error', 'Failed to post comment.');
+                }
+            });
+        }
+        
+        fetchComments(1);
+    }
+
+    function initSorting() {
+        const sortSelect = document.getElementById('sort-by');
+        if(!sortSelect) return;
+        sortSelect.addEventListener('change', () => {
+            loadContent(`/category/${sortSelect.dataset.category}?sort=${sortSelect.value}`);
+        });
+    }
+
+    function initAuthForms() {
+        const form = document.querySelector('#register-form, #login-form');
+        if (!form) return;
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.field-errors, .form-errors').forEach(el => el.innerHTML = '');
+            const formData = new FormData(form);
+            const response = await fetch(form.action, { method: 'POST', body: formData });
+            const data = await response.json();
+            if (data.status === 'success') {
+                window.location.href = data.redirect_url;
+            } else if (data.status === 'error') {
+                for (const field in data.errors) {
+                    const errorMessages = data.errors[field];
+                    const errorDiv = document.getElementById(`${field}-errors`) || document.getElementById('form-errors');
+                    if (errorDiv) errorDiv.innerHTML = errorMessages.join('<br>');
+                }
+            }
+        });
+    }
+
+    function initCraveCoins() {
+        const toggle = document.getElementById('crave-coins-toggle');
+        const menu = document.getElementById('crave-coins-menu');
+        if (!toggle || !menu) return;
+
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+                menu.classList.remove('active');
+            }
+        });
+    }
+    
+    let clickerInterval;
+    function initMakeMorePage() {
+        const coinBtn = document.getElementById('big-crave-coin');
+        if (!coinBtn) return; 
+
+        clearInterval(clickerInterval); // Clear previous interval if navigating back and forth
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const clicksRemainingEl = document.getElementById('clicks-remaining');
+        const MAX_CLICKS = 10;
+        const TIME_LIMIT_MS = 60000;
+        
+        let sessionClicks = 0;
+        let periodStart = Date.now();
+
+        function updateDisplay() {
+            const now = Date.now();
+            if (now - periodStart > TIME_LIMIT_MS) {
+                periodStart = now;
+                sessionClicks = 0;
+            }
+            clicksRemainingEl.textContent = Math.max(0, MAX_CLICKS - sessionClicks);
+        }
+
+        coinBtn.addEventListener('click', async () => {
+            if (sessionClicks < MAX_CLICKS) {
+                sessionClicks++;
+                updateDisplay();
 
                 try {
-                    // Fetch the content partial and page title
-                    const response = await fetch(`${url}${url.includes('?') ? '&' : '?'}partial=true`);
-                    if (!response.ok) throw new Error(`Failed to load: ${response.statusText}`);
-                    const data = await response.json();
-                    
-                    if (pushState) {
-                        history.pushState({ path: url }, '', url);
-                    }
-                    
-                    // Update content, title, and active sidebar link
-                    document.title = data.title;
-                    contentContainer.innerHTML = data.html;
-                    updateActiveSidebar(url);
-                    
-                    // Re-initialize scripts for the new content
-                    initializePageScripts();
-
-                } catch (error) {
-                    console.error('Failed to load page content:', error);
-                    // On failure, perform a traditional navigation to the page
-                    window.location.href = url;
-                } finally {
-                    contentContainer.style.opacity = '1';
-                }
-            }
-            
-            function updateActiveSidebar(path) {
-                document.querySelectorAll('.sidebar-item').forEach(link => {
-                    // Check if the link's href is a prefix of the current path
-                    if (link.getAttribute('href') === path) {
-                        link.classList.add('active');
+                    const response = await fetch('/api/claim-coin', {
+                        method: 'POST',
+                        headers: { 'X-CSRF-Token': csrfToken }
+                    });
+                    if (!response.ok) {
+                        if (response.status === 429) {
+                            showCustomPrompt('Rate Limit Exceeded', 'You are clicking too fast! Please wait a moment.');
+                            sessionClicks = MAX_CLICKS;
+                            updateDisplay();
+                        } else {
+                           throw new Error('Failed to claim coin');
+                        }
                     } else {
-                        link.classList.remove('active');
+                        const data = await response.json();
+                        if (data.success) {
+                            const newBalance = data.new_balance;
+                            const formattedBalance = newBalance.toLocaleString();
+                            document.getElementById('crave-coin-balance').textContent = formattedBalance;
+                            document.getElementById('all-time-earnings').textContent = formattedBalance;
+                        }
                     }
-                });
+                } catch (error) {
+                    console.error('Coin claim failed:', error);
+                }
+            } else {
+                showCustomPrompt('Limit Reached', 'You have reached the click limit for this minute. Please wait.');
             }
+        });
 
-            // Intercept clicks on internal links
-            document.body.addEventListener('click', (e) => {
-                // Find the closest ancestor `<a>` tag
-                const link = e.target.closest('a');
+        clickerInterval = setInterval(updateDisplay, 1000);
+        updateDisplay(); 
+    }
 
-                // Check if it's an internal link (same domain) and not a link to an asset
-                if (link && link.hostname === window.location.hostname && !link.getAttribute('href').startsWith('/play/')) {
-                    e.preventDefault();
-                    const href = link.getAttribute('href');
-                    loadContent(href);
-                }
-            });
+    function initStore() {
+        const buyButtons = document.querySelectorAll('.buy-button:not([disabled])');
+        if (buyButtons.length === 0) return;
 
-            // Handle browser back/forward buttons
-            window.addEventListener('popstate', (e) => {
-                if (e.state && e.state.path) {
-                    loadContent(e.state.path, false);
-                } else {
-                    // Fallback for initial state
-                    loadContent(location.pathname + location.search, false);
-                }
-            });
-            
-            // --- Global Scripts (like search, theme, disguise) ---
-            // These don't need to be re-initialized as they are part of the permanent DOM
-            // --- Global Scripts (like search, theme, disguise) ---
-            const searchInput = document.querySelector('.search-input');
-            const searchResultsContainer = document.getElementById('search-results-dropdown');
-            let searchTimeout;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            searchInput.addEventListener('input', () => {
-                const query = searchInput.value.trim();
-                clearTimeout(searchTimeout); // Reset the timer on each keystroke
+        buyButtons.forEach(button => {
+            button.addEventListener('click', async () => {
+                const itemId = button.dataset.itemId;
+                const itemPrice = parseInt(button.dataset.itemPrice, 10);
+                const coinBalanceEl = document.getElementById('crave-coin-balance');
+                const currentBalance = parseInt(coinBalanceEl.textContent.replace(/,/g, ''), 10);
 
-                if (query.length < 2) {
-                    searchResultsContainer.innerHTML = '';
-                    searchResultsContainer.style.display = 'none';
+                if (currentBalance < itemPrice) {
+                    showCustomPrompt('Insufficient Funds', 'You do not have enough Crave Coins to buy this item.');
                     return;
                 }
 
-                // Debounce the search to avoid sending a request on every single key press
-                searchTimeout = setTimeout(async () => {
-                    try {
-                        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-                        if (!response.ok) throw new Error('Search request failed');
-                        
-                        const results = await response.json();
+                try {
+                    const response = await fetch(`/api/buy-item/${itemId}`, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-Token': csrfToken }
+                    });
+                    const data = await response.json();
 
-                        searchResultsContainer.innerHTML = ''; // Clear old results
-
-                        if (results.length > 0) {
-                            results.forEach(game => {
-                                // Create a link for each game found
-                                const gameLink = document.createElement('a');
-                                gameLink.href = `/game/${game.id}`;
-                                gameLink.classList.add('search-result-item');
-                                gameLink.innerHTML = `
-                                    <img src="/thumbnail/${game.id}" class="search-result-img" alt="">
-                                    <span class="search-result-name">${game.name}</span>
-                                `;
-                                searchResultsContainer.appendChild(gameLink);
-                            });
-                        } else {
-                            // Show a "no results" message
-                            const noResults = document.createElement('div');
-                            noResults.classList.add('search-no-results');
-                            noResults.textContent = 'No games found.';
-                            searchResultsContainer.appendChild(noResults);
-                        }
-                        searchResultsContainer.style.display = 'block';
-                    } catch (error) {
-                        console.error('Search failed:', error);
-                        searchResultsContainer.style.display = 'none';
+                    if (data.success) {
+                        coinBalanceEl.textContent = data.new_balance.toLocaleString();
+                        button.textContent = 'Owned';
+                        button.disabled = true;
+                        button.classList.add('owned');
+                        showCustomPrompt('Purchase Successful!', 'The item has been added to your inventory.');
+                    } else {
+                        showCustomPrompt('Error', data.error || 'The purchase could not be completed.');
                     }
-                }, 300); // Wait 300ms after user stops typing
-            });
-
-            // Hide the search results when clicking anywhere else on the page
-            document.addEventListener('click', (e) => {
-                if (!searchResultsContainer.contains(e.target) && e.target !== searchInput) {
-                    searchResultsContainer.style.display = 'none';
+                } catch (error) {
+                    showCustomPrompt('Error', 'An unexpected error occurred. Please try again.');
                 }
             });
-            // ... (Your full search JavaScript logic here) ...
-            
-            const disguiseBtn = document.getElementById('disguise-btn');
-            // ... (Your full disguise feature logic here) ...
         });
-    </script>
+    }
+
+    function initInventoryPage() {
+        const inventoryContainer = document.querySelector('.inventory-container');
+        if (!inventoryContainer) return;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        inventoryContainer.querySelectorAll('.set-avatar-btn').forEach(button => {
+            button.addEventListener('click', async () => {
+                const itemId = button.dataset.itemId;
+                
+                const response = await fetch(`/api/set-active-avatar/${itemId}`, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-Token': csrfToken }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    const sidebarAvatar = document.querySelector('.sidebar-avatar');
+                    if(sidebarAvatar) {
+                        sidebarAvatar.src = data.new_avatar_url;
+                    }
+                    
+                    inventoryContainer.querySelectorAll('.inventory-card.active').forEach(card => card.classList.remove('active'));
+                    inventoryContainer.querySelectorAll('.set-avatar-btn').forEach(btn => btn.textContent = 'Select');
+
+                    const newActiveCard = inventoryContainer.querySelector(`.inventory-card[data-item-id='${itemId}']`);
+                    newActiveCard.classList.add('active');
+                    button.textContent = 'Active';
+
+                    showCustomPrompt('Success', 'Your active avatar has been updated.');
+                } else {
+                    showCustomPrompt('Error', data.error || 'Could not set active avatar.');
+                }
+            });
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initializePageScripts();
+        window.addEventListener('popstate', e => {
+            if (e.state && e.state.path) loadContent(e.state.path, false);
+            else if (clickerInterval) clearInterval(clickerInterval);
+        });
+        const randomGameBtn = document.getElementById('random-game-btn');
+        if (randomGameBtn) randomGameBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const response = await fetch('/random');
+            const data = await response.json();
+            if(data.url) loadContent(data.url);
+        });
+        const searchInput = document.querySelector('.search-input');
+        const searchResults = document.getElementById('search-results-dropdown');
+        let searchTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const query = searchInput.value.trim();
+            if (query.length < 2) {
+                searchResults.classList.remove('is-loading', 'has-results');
+                return;
+            }
+            searchResults.innerHTML = '<div class="search-loader"></div>';
+            searchResults.classList.add('is-loading');
+            searchResults.classList.remove('has-results');
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                    const results = await response.json();
+                    searchResults.innerHTML = '';
+                    searchResults.classList.remove('is-loading');
+                    searchResults.classList.add('has-results');
+                    if (results.length > 0) {
+                        results.forEach(game => {
+                            searchResults.innerHTML += `<a href="/game/${game.id}" class="search-result-item"><img src="/thumbnail/${game.id}" class="search-result-thumbnail" alt="${game.name}"><span class="search-result-name">${game.name}</span></a>`;
+                        });
+                    } else {
+                        searchResults.innerHTML = `<div class="no-search-results">No games found.</div>`;
+                    }
+                } catch (error) {
+                    console.error('Search failed:', error);
+                    searchResults.classList.remove('is-loading');
+                    searchResults.classList.add('has-results');
+                    searchResults.innerHTML = `<div class="no-search-results">Search failed to load.</div>`;
+                }
+            }, 300);
+        });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('is-loading', 'has-results');
+            }
+        });
+        const promptOverlay = document.getElementById('custom-prompt-overlay');
+        const promptCloseBtn = document.getElementById('prompt-close-btn');
+        function closePrompt() { promptOverlay.classList.remove('active'); }
+        promptOverlay.addEventListener('click', (e) => { if (e.target === promptOverlay) closePrompt(); });
+        promptCloseBtn.addEventListener('click', closePrompt);
+    });
+</script>
 </body>
 </html>
