@@ -1,5 +1,7 @@
 Flask
 flask_sqlalchemy
 flask_login
+flask_limiter
+flask_wtf
 gunicorn
 requests
