@@ -1,0 +1,99 @@
+<div class="chat-container">
+    <div class="chat-header">
+        Secure Encrypted Chat
+    </div>
+
+    <div id="messages" class="chat-messages">
+        </div>
+
+    <form id="message-form" class="chat-form">
+        <input type="text" id="message-input" class="chat-input" placeholder="Initializing encryption..." autocomplete="off" disabled>
+        <button type="submit" class="chat-send-btn" aria-label="Send Message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
+        </button>
+    </form>
+</div>
+
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    // --- Globals ---
+    const socket = io();
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+    const messagesDiv = document.getElementById('messages');
+    let encryptionKey = null;
+    const currentUsername = "{{ current_user.username if current_user.is_authenticated else 'Anonymous' }}";
+
+    // --- UTILITY & CRYPTO FUNCTIONS (Unchanged) ---
+    function bufferToBase64(buffer) { return btoa(String.fromCharCode.apply(null, new Uint8Array(buffer))); }
+    function base64ToBuffer(base64) { const binaryString = atob(base64); const len = binaryString.length; const bytes = new Uint8Array(len); for (let i = 0; i < len; i++) { bytes[i] = binaryString.charCodeAt(i); } return bytes.buffer; }
+    async function deriveKey(password, salt) { const encoder = new TextEncoder(); const keyMaterial = await crypto.subtle.importKey('raw', encoder.encode(password), { name: 'PBKDF2' }, false, ['deriveKey']); return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: encoder.encode(salt), iterations: 100000, hash: 'SHA-256' }, keyMaterial, { name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']); }
+    async function encryptMessage(text) { if (!encryptionKey) throw new Error("Encryption key not ready."); const iv = crypto.getRandomValues(new Uint8Array(12)); const encodedText = new TextEncoder().encode(text); const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, encryptionKey, encodedText); return { ciphertext: bufferToBase64(ciphertext), iv: bufferToBase64(iv) }; }
+    async function decryptMessage(data) { if (!encryptionKey) throw new Error("Encryption key not ready."); const ciphertext = base64ToBuffer(data.ciphertext); const iv = base64ToBuffer(data.iv); const decryptedBuffer = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, encryptionKey, ciphertext); return new TextDecoder().decode(decryptedBuffer); }
+    
+    // --- DOM & RENDER FUNCTIONS ---
+    function addStatusMessage(msg) { const item = document.createElement('div'); item.className = 'chat-status-message'; item.textContent = msg; messagesDiv.appendChild(item); scrollToBottom(); }
+    function scrollToBottom() { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
+
+    async function renderMessage(payload) {
+        const item = document.createElement('div');
+        item.className = 'chat-message';
+        if (payload.username === currentUsername) {
+            item.classList.add('sent');
+        }
+
+        const timestamp = new Date(payload.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const cleanUsername = payload.username.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        
+        let messageContent = `<span class="text-muted fst-italic">Decrypting...</span>`;
+        item.innerHTML = `
+            <div class="chat-message-meta">
+                <span class="chat-message-username">${cleanUsername}</span>
+                <span class="chat-message-timestamp">${timestamp}</span>
+            </div>
+            <div class="chat-message-bubble">${messageContent}</div>`;
+        messagesDiv.appendChild(item);
+
+        try {
+            const decryptedText = await decryptMessage(payload.data);
+            const cleanMessage = decryptedText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            item.querySelector('.chat-message-bubble').innerHTML = cleanMessage;
+        } catch (e) {
+            console.error("Decryption failed!", e);
+            item.querySelector('.chat-message-bubble').innerHTML = `<span class="text-danger fw-bold">⚠️ Decryption Failed!</span>`;
+        }
+        // Do not scroll here, wait until all history is loaded
+    }
+
+    // --- SOCKET.IO EVENT HANDLERS ---
+    socket.on('connect', () => console.log('Socket.IO connected!'));
+    socket.on('status', (data) => addStatusMessage(data.msg));
+    socket.on('new_message', (payload) => {
+        renderMessage(payload);
+        scrollToBottom(); // Scroll only for new messages
+    });
+
+    // ** NEW: Listener for message history **
+    socket.on('message_history', (data) => {
+        addStatusMessage("Loading message history...");
+        if (data.messages && data.messages.length > 0) {
+            for (const payload of data.messages) {
+                renderMessage(payload);
+            }
+            addStatusMessage("History loaded.");
+        } else {
+            addStatusMessage("No previous messages found.");
+        }
+        scrollToBottom(); // Scroll to bottom after history is rendered
+    });
+
+    // --- FORM SUBMIT HANDLER ---
+    messageForm.addEventListener('submit', async function(e) { e.preventDefault(); const messageText = messageInput.value.trim(); if (messageText && encryptionKey) { try { const encryptedPayload = await encryptMessage(messageText); socket.emit('chat_message', encryptedPayload); messageInput.value = ''; } catch(e) { console.error("Encryption failed:", e); alert("Could not encrypt your message."); } } });
+    
+    // --- INITIALIZATION ---
+    async function initializeChat() { const password = sessionStorage.getItem('chatPassword'); if (!password) { alert('Chat key not found. Returning to password page.'); window.location.href = "{{ url_for('secure_chat_password') }}"; return; } try { const salt = "a-very-good-salt-for-cravegames-chat"; encryptionKey = await deriveKey(password, salt); messageInput.disabled = false; messageInput.placeholder = "Type an encrypted message..."; addStatusMessage("Encryption enabled. You are now secure."); } catch (e) { console.error("Key derivation failed:", e); addStatusMessage("FATAL: Could not initialize encryption. Please refresh."); } }
+    initializeChat();
+});
+</script>

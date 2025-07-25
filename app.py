@@ -1,5 +1,4 @@
-# app.py
-from flask import Flask, render_template, send_from_directory, abort, jsonify, request, redirect, url_for
+from flask import Flask, render_template, send_from_directory, abort, jsonify, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_wtf import FlaskForm
@@ -9,10 +8,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import os
 import json
 from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta, UTC
+
 
 app = Flask(__name__)
 
@@ -20,6 +22,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a-very-secret-key-that-you-should-change'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['CHAT_PASSWORD'] = 'SecureLoliGang2020!'  # Change this password
 
 GAMES_FOLDER = 'games'
 PLAY_COUNTS_FILE = 'play_counts.json'
@@ -31,6 +34,7 @@ limiter = Limiter(
     get_remote_address,
     app=app
 )
+socketio = SocketIO(app)  # Add SocketIO
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -47,6 +51,16 @@ class User(UserMixin, db.Model):
     inventory = db.relationship('UserInventory', backref='user', lazy=True)
     active_avatar_item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=True)
     active_avatar = db.relationship('Item')
+
+# Add this model to your Database Models section
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    room = db.Column(db.String(100), nullable=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    username = db.Column(db.String(150), nullable=False)
+    ciphertext = db.Column(db.Text, nullable=False)
+    iv = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(UTC), index=True)
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,7 +103,7 @@ def load_user(user_id):
 # --- Form Classes ---
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[
-        DataRequired(), 
+        DataRequired(),
         Length(min=4, max=20),
         Regexp('^[a-z0-9_-]+$', message='Username must contain only lowercase letters, numbers, underscores, or hyphens.')
     ])
@@ -330,6 +344,38 @@ def inventory():
     inventory_items = [inv.item for inv in current_user.inventory]
     return render_or_jsonify('inventory_content.html', title="My Collection", active_page='Inventory', items=inventory_items)
 
+# --- Secure Chat Routes ---
+@app.route('/secure-chat', methods=['GET', 'POST'])
+def secure_chat_password():
+    """Renders a page that asks for a password to access the chat."""
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if password == app.config['CHAT_PASSWORD']:
+            session['chat_authenticated'] = True
+            # On successful POST, redirect to the chat room
+            return jsonify({'status': 'success', 'redirect_url': url_for('chat_room')})
+        else:
+            # On failed POST, return an error
+            return jsonify({'status': 'error', 'message': 'Invalid password.'}), 401
+    
+    # On GET, render the page using the application's helper
+    return render_or_jsonify(
+        'secure_chat_password_content.html', 
+        title="Secure Chat Access",
+        active_page='Chat' # Optional: for navbar highlighting
+    )
+
+@app.route('/chat-room')
+def chat_room():
+    """Displays the main chat room interface if the user is authenticated."""
+    if not session.get('chat_authenticated'):
+        return redirect(url_for('secure_chat_password'))
+    
+    return render_or_jsonify(
+        'chat_room_content.html', 
+        title="Secure Chat Room",
+        active_page='Chat' # Optional: for navbar highlighting
+    )
 
 # --- API Endpoints ---
 @app.route('/api/rate/<game_id>', methods=['POST'])
@@ -371,12 +417,8 @@ def handle_comments(game_id):
             return jsonify({'error': 'Authentication required'}), 401
         
         text = request.json.get('text', '').strip()
-
-        # Validation Checks
-        if not text:
-            return jsonify({'error': 'Comment text cannot be empty.'}), 400
-        if len(text) > 500:
-            return jsonify({'error': 'Comment cannot exceed 500 characters.'}), 400
+        if not text: return jsonify({'error': 'Comment text cannot be empty.'}), 400
+        if len(text) > 500: return jsonify({'error': 'Comment cannot exceed 500 characters.'}), 400
 
         comment = Comment(text=text, game_id=game_id, user_id=current_user.id)
         db.session.add(comment)
@@ -446,7 +488,6 @@ def buy_item(item_id):
 @app.route('/api/set-active-avatar/<int:item_id>', methods=['POST'])
 @login_required
 def set_active_avatar(item_id):
-    # Check if user owns the item
     if not UserInventory.query.filter_by(user_id=current_user.id, item_id=item_id).first():
         return jsonify({'success': False, 'error': 'You do not own this item.'}), 403
     
@@ -455,6 +496,86 @@ def set_active_avatar(item_id):
     
     return jsonify({'success': True, 'new_avatar_url': url_for('static', filename=current_user.active_avatar.image_url)})
 
+# --- Socket.IO Event Handlers ---
+# In app.py
+
+@socketio.on('connect')
+def handle_connect():
+    if not session.get('chat_authenticated'):
+        return False
+    
+    room_name = 'e2ee_chat_room'
+    join_room(room_name)
+    
+    # --- LOAD AND SEND MESSAGE HISTORY ---
+    # Query last 50 messages for the room
+    history = db.session.execute(
+        db.select(ChatMessage)
+        .where(ChatMessage.room == room_name)
+        .order_by(ChatMessage.timestamp.desc())
+        .limit(50)
+    ).scalars().all()
+    history.reverse() # Put them in chronological order
+
+    # Format history for the client
+    message_history = []
+    for msg in history:
+        message_history.append({
+            'username': msg.username,
+            'timestamp': msg.timestamp.isoformat(),
+            'data': {
+                'ciphertext': msg.ciphertext,
+                'iv': msg.iv
+            }
+        })
+    # Emit history to the just-connected client
+    emit('message_history', {'messages': message_history})
+    # --- END OF HISTORY LOGIC ---
+
+    username = current_user.username if current_user.is_authenticated else "Anonymous"
+    emit('status', {'msg': f'{username} has entered the room.'}, to=room_name)
+    print(f'Client connected and added to room: {username}')
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    room_name = 'e2ee_chat_room'
+    leave_room(room_name)
+    
+    username = current_user.username if current_user.is_authenticated else "Anonymous"
+    emit('status', {'msg': f'{username} has left the room.'}, to=room_name)
+    print(f'Client disconnected and removed from room: {username}')
+
+@socketio.on('chat_message')
+def handle_chat_message(json_data):
+    if not session.get('chat_authenticated'):
+        return
+
+    room_name = 'e2ee_chat_room'
+    
+    # --- SAVE MESSAGE TO DATABASE ---
+    timestamp_now = datetime.now(UTC)
+    new_msg = ChatMessage(
+        room=room_name,
+        user_id=current_user.id if current_user.is_authenticated else None,
+        username=current_user.username if current_user.is_authenticated else "Anonymous",
+        ciphertext=json_data.get('ciphertext'),
+        iv=json_data.get('iv'),
+        timestamp=timestamp_now
+    )
+    db.session.add(new_msg)
+    db.session.commit()
+    # --- END OF SAVE LOGIC ---
+    
+    payload = {
+        'username': new_msg.username,
+        'timestamp': new_msg.timestamp.isoformat(),
+        'data': {
+            'ciphertext': new_msg.ciphertext,
+            'iv': new_msg.iv
+        }
+    }
+
+    emit('new_message', payload, to=room_name)
 
 # --- Asset and Utility Routes ---
 @app.route('/play/<game_id>')
@@ -491,4 +612,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         seed_database()
-    app.run(debug=True)
+    socketio.run(app, debug=True)
