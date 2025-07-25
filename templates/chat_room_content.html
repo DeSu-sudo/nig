@@ -75,18 +75,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         scrollToBottom(); // Scroll only for new messages
     });
 
-    // ** NEW: Listener for message history **
-    socket.on('message_history', (data) => {
+    // ** UPDATED: Listener for message history **
+    socket.on('message_history', async (data) => { // <-- 1. ADD 'async' HERE
         addStatusMessage("Loading message history...");
+        
         if (data.messages && data.messages.length > 0) {
             for (const payload of data.messages) {
-                renderMessage(payload);
+                await renderMessage(payload); // <-- 2. ADD 'await' HERE
             }
             addStatusMessage("History loaded.");
         } else {
             addStatusMessage("No previous messages found.");
         }
-        scrollToBottom(); // Scroll to bottom after history is rendered
+        
+        scrollToBottom(); // Scroll to bottom after all history is rendered
     });
 
     // --- FORM SUBMIT HANDLER ---
