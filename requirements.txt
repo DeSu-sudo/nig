@@ -1,5 +1,6 @@
 Flask
 flask_sqlalchemy
+flask_socketio
 flask_login
 flask_limiter
 flask_wtf
